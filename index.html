@@ -36,8 +36,11 @@ h1,h2,h3{margin:0;line-height:1.1}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
 .btn.ghost{background:#efeaff;color:var(--bg1)}
 .btn.danger{background:#ef4444}
+.btn.green{background:#22c55e}
 .btn.big{font-size:22px;padding:16px 22px;width:100%}
+.btn.rec{background:#ef4444;color:#fff;animation:pulse 1s infinite}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.nowrap{flex-wrap:nowrap}
 label.f{display:block;font-weight:700;margin:10px 0 4px}
 .inp{width:100%;padding:12px 14px;border-radius:14px;border:2px solid #e4ddff;font-size:17px;background:#faf8ff;color:var(--ink)}
 .inp:focus{outline:none;border-color:var(--bg1)}
@@ -47,6 +50,7 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .toast{position:fixed;left:50%;bottom:calc(var(--safe-b) + 24px);transform:translateX(-50%) translateY(40px);opacity:0;
   background:#2a1f4f;color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;z-index:999;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{box-shadow:0 0 0 14px rgba(239,68,68,0)}}
 
 /* ---------- welcome ---------- */
 .center{min-height:calc(100vh - 40px);display:flex;flex-direction:column;justify-content:center;align-items:center;max-width:520px;margin:0 auto}
@@ -61,12 +65,15 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .status .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#facc15;margin-right:6px}
 .status.on .dot{background:#4ade80}
 .status.off .dot{background:#f87171}
-.moods{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px;scrollbar-width:none}
-.moods::-webkit-scrollbar{display:none}
-.mood{flex:0 0 auto;background:rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:8px 16px;font-size:20px;font-weight:700;
+.chiprow{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px;scrollbar-width:none;align-items:center}
+.chiprow::-webkit-scrollbar{display:none}
+.mood,.to{flex:0 0 auto;background:rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:8px 16px;font-size:20px;font-weight:700;
   display:flex;align-items:center;gap:6px;border:3px solid transparent;transition:transform .15s}
-.mood .me{font-size:28px}
+.mood .me,.to .me{font-size:28px}
 .mood.sel{background:#fff;color:var(--ink);border-color:#facc15;transform:scale(1.08);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.to{background:rgba(0,0,0,.15)}
+.to.sel{background:#fff;color:var(--ink);border-color:#4ade80;transform:scale(1.08);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.rowlabel{color:#fff;font-size:28px;flex:0 0 auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(46%,210px),1fr));gap:16px}
 .kbtn{position:relative;border-radius:30px;padding:18px 12px 16px;color:#fff;min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   box-shadow:0 9px 0 rgba(0,0,0,.22),0 14px 24px rgba(0,0,0,.18);transition:transform .1s,box-shadow .1s,filter .2s;overflow:hidden}
@@ -74,28 +81,38 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .kbtn .e{font-size:clamp(56px,8vw,78px);line-height:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.15))}
 .kbtn .t{font-size:clamp(19px,2.4vw,25px);font-weight:800;margin-top:8px;text-align:center;line-height:1.1;text-shadow:0 2px 0 rgba(0,0,0,.18)}
 .kbtn.sent{animation:sentPop .6s}
+.kbtn.speaking{animation:aWob .5s 2}
 .kbtn[disabled]{filter:saturate(.35) brightness(.9)}
 .kbtn::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.28),transparent 45%);pointer-events:none}
+.kbtn .help{position:absolute;top:8px;right:8px;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);
+  font-weight:800;font-size:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.2);z-index:2;line-height:1}
+.kbtn .help:active{transform:scale(.9)}
+.kbtn.mic{background:linear-gradient(135deg,#ef4444,#f97316)}
 @keyframes sentPop{0%{transform:scale(1)}30%{transform:scale(.9)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
 .recharge{height:14px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden;margin:0 0 12px;position:relative}
 .recharge i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#facc15,#4ade80);border-radius:99px}
 .recharge-wrap{color:#fff;font-weight:700;text-align:center}
 .kid-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:#fff}
-.gear{font-size:26px;opacity:.55;padding:8px;border-radius:50%;position:relative}
+.gear{font-size:30px;opacity:.6;padding:12px;border-radius:50%;position:relative;touch-action:none;-webkit-touch-callout:none}
 .gear .ring{position:absolute;inset:0;border-radius:50%;border:3px solid #fff;opacity:0;transform:scale(.5)}
 .gear.holding .ring{animation:hold 1.6s linear forwards}
 @keyframes hold{from{opacity:.2;transform:scale(.5)}to{opacity:1;transform:scale(1.4)}}
-.lastreply{background:rgba(255,255,255,.22);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:16px}
+.lastreply{background:rgba(255,255,255,.22);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:16px;max-width:70vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tip{background:#fff7d6;border-radius:18px;padding:12px 16px;margin-bottom:14px;font-size:16px;display:flex;gap:12px;align-items:center}
 .tip b{color:#b45309}
-
-/* sent splash on kid */
 .flyer{position:fixed;font-size:70px;z-index:50;pointer-events:none;animation:fly 1.1s ease-in forwards}
 @keyframes fly{0%{transform:translate(0,0) scale(1) rotate(0)}100%{transform:translate(40vw,-110vh) scale(.4) rotate(40deg);opacity:.2}}
 
+/* kid recording */
+.recsheet{text-align:center}
+.recdot{width:160px;height:160px;border-radius:50%;background:#ef4444;margin:10px auto;display:flex;align-items:center;justify-content:center;font-size:80px;animation:pulse 1s infinite}
+.rectime{font-size:40px;font-weight:800}
+.recbar{height:12px;background:#f2eeff;border-radius:99px;overflow:hidden;margin:8px 0 18px}
+.recbar i{display:block;height:100%;width:0;background:#ef4444}
+
 /* ---------- overlays ---------- */
 .ov{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(30,15,70,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.sheet{background:#fff;border-radius:28px;padding:22px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.sheet{background:#fff;border-radius:28px;padding:22px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);max-height:92vh;overflow:auto}
 .pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
 .pinpad button{background:#f2eeff;border-radius:18px;font-size:28px;font-weight:800;padding:14px 0}
 .pinpad button:active{background:#e0d7ff}
@@ -105,13 +122,14 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .shake{animation:shake .45s}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
 
-/* reply reveal on kid */
+/* reply reveal */
 #reveal{flex-direction:column;background:rgba(20,10,50,.6)}
-#reveal .card{background:#fff;border-radius:36px;padding:30px 26px;max-width:560px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;z-index:2}
+#reveal .card{background:#fff;border-radius:36px;padding:26px 24px;max-width:560px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;z-index:2;max-height:94vh;overflow:auto}
 #reveal .from{font-weight:700;color:var(--muted);font-size:20px}
 #reveal .bigE{font-size:clamp(110px,22vw,170px);line-height:1.15;display:inline-block}
+#reveal .bigE img{display:block;max-width:100%;max-height:48vh;border-radius:24px;box-shadow:0 8px 24px rgba(0,0,0,.2);margin:6px auto}
 #reveal .msg{font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1.1;margin:6px 0 16px}
-#reveal .tapsound{font-weight:700;color:var(--bg1);font-size:18px;margin-bottom:10px}
+#reveal .tapsound{font-weight:700;color:var(--bg1);font-size:22px;margin-bottom:10px}
 .particle{position:fixed;top:-60px;z-index:1;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(115vh) rotate(var(--rot,360deg))}}
 .confetto{width:12px;height:18px;border-radius:3px}
@@ -138,10 +156,12 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 
 /* ---------- parent view ---------- */
 #parent{max-width:720px;margin:0 auto}
-.p-top{display:flex;justify-content:space-between;align-items:center;color:#fff;margin-bottom:12px}
+.p-top{display:flex;justify-content:space-between;align-items:center;color:#fff;margin-bottom:12px;gap:10px}
 .p-top h1{font-size:30px;font-weight:800}
+.p-top .who{background:rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:17px}
 .tabs{display:flex;gap:6px;background:rgba(255,255,255,.2);padding:5px;border-radius:18px;margin-bottom:14px}
-.tabs button{flex:1;color:#fff;font-weight:700;font-size:15px;padding:10px 2px;border-radius:14px;white-space:nowrap}
+.tabs button{flex:1;color:#fff;font-weight:700;font-size:13px;padding:6px 2px;border-radius:14px;white-space:nowrap;display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.tabs button b{font-size:22px;font-weight:400}
 .tabs button.on{background:#fff;color:var(--bg1)}
 .inbox-item{display:flex;gap:12px;padding:12px 0;border-bottom:2px dashed #eee8ff;align-items:flex-start}
 .inbox-item:last-child{border-bottom:0}
@@ -149,6 +169,7 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .inbox-item .it{font-weight:800;font-size:18px;line-height:1.15}
 .inbox-item .im{font-size:16px}
 .inbox-item .tm{font-size:13px;color:var(--muted)}
+.inbox-item audio{width:100%;margin-top:6px}
 .inbox-item.urgent{background:#fff1f1;border-radius:14px;padding:12px;border-bottom:0;margin:4px 0}
 .qr-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .qr-row button{background:#f2eeff;border-radius:12px;padding:4px 10px;font-weight:700;font-size:15px}
@@ -157,6 +178,12 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .rbtn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
 .rbtn .e{font-size:38px;line-height:1.1}
 .rbtn .fx{font-size:12px;font-weight:600;opacity:.9}
+.bigchoice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.bigchoice button{background:#fff;border-radius:22px;padding:16px 8px;font-weight:800;font-size:18px;box-shadow:0 8px 20px rgba(40,10,90,.2);display:flex;flex-direction:column;align-items:center}
+.bigchoice button span{font-size:40px;line-height:1.1}
+.att{margin-top:12px;background:#faf8ff;border:2px dashed #d9cfff;border-radius:18px;padding:10px;display:flex;gap:10px;align-items:center}
+.att img{max-height:110px;max-width:60%;border-radius:12px}
+.att audio{flex:1;min-width:0}
 .edit-item{display:grid;grid-template-columns:62px 1fr auto;gap:8px;align-items:center;padding:10px;border-radius:18px;margin-bottom:10px;color:#fff}
 .edit-item .inp{background:rgba(255,255,255,.92);border-color:transparent;padding:9px 10px}
 .edit-item .emo{text-align:center;font-size:28px;padding:4px}
@@ -168,13 +195,102 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{background:#f2eeff;border-radius:999px;padding:6px 14px;font-weight:700;border:2px solid transparent}
 .chip.on{background:var(--bg1);color:#fff}
+.toggle{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:2px dashed #eee8ff;font-weight:700}
+.toggle span{flex:1}
+.toggle small{display:block;font-weight:500;color:var(--muted)}
+.sw{appearance:none;-webkit-appearance:none;width:54px;height:32px;border-radius:99px;background:#ddd6f3;position:relative;transition:.2s;flex:0 0 auto;margin:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.sw:checked{background:#22c55e}
+.sw:checked::after{left:25px}
+.parent-row{display:grid;grid-template-columns:58px 1fr auto auto auto;gap:8px;align-items:center;margin-bottom:12px}
+.parent-row .emo{text-align:center;font-size:26px;padding:4px}
+.parent-row .me-badge{grid-column:2/-1;margin-top:-4px;font-size:13px;color:var(--muted)}
 .step{display:flex;gap:12px;margin:14px 0}
 .step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--bg1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-#qrbox{background:#fff;padding:10px;border-radius:16px;display:inline-block;border:3px solid #efeaff}
-#qrbox img,#qrbox canvas{display:block;width:200px;height:200px}
+.qrbox{background:#fff;padding:10px;border-radius:16px;display:inline-block;border:3px solid #efeaff}
+.qrbox img,.qrbox canvas{display:block;width:200px;height:200px}
 .emoji-pick{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .emoji-pick button{font-size:26px;padding:2px 4px;border-radius:8px}
 .emoji-pick button:active{background:#eee}
+
+/* ---------- games ---------- */
+.kbtn.game{background:linear-gradient(135deg,#06b6d4,#22c55e)}
+#gameOv{background:linear-gradient(160deg,#4f46e5,#db2777);flex-direction:column;justify-content:flex-start;align-items:stretch;overflow:auto;
+  padding:calc(var(--safe-t) + 10px) calc(var(--safe-r) + 14px) calc(var(--safe-b) + 14px) calc(var(--safe-l) + 14px)}
+.ghead{display:flex;justify-content:space-between;align-items:center;color:#fff;gap:10px}
+.ghead h2{font-size:clamp(22px,4vw,32px);font-weight:800}
+.gx{background:rgba(255,255,255,.25);color:#fff;border-radius:50%;width:54px;height:54px;font-size:24px;flex:0 0 auto}
+.gx.dark{background:#f2eeff;color:var(--ink)}
+.gplayers{display:flex;justify-content:center;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+.gp{background:rgba(255,255,255,.2);color:#fff;border-radius:22px;padding:6px 14px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;border:4px solid transparent;transition:.2s}
+.gp .pe{font-size:34px}
+.gp .sc{background:#fff;color:var(--ink);border-radius:99px;padding:0 10px;font-size:18px}
+.gp.turn{background:#fff;color:var(--ink);border-color:#facc15;transform:scale(1.06)}
+.vs{color:#fff;font-weight:800;font-size:20px}
+.gstatus{text-align:center;color:#fff;font-size:clamp(24px,4vw,36px);font-weight:800;min-height:1.3em;text-shadow:0 3px 0 rgba(0,0,0,.15)}
+.gsub{text-align:center;color:#fff;font-size:22px;font-weight:700}
+.board{margin:14px auto;display:grid;gap:10px;justify-content:center;width:max-content}
+.board.ttt{grid-template-columns:repeat(3,var(--s));--s:min(26vw,24vh,150px)}
+.cell{width:var(--s);height:var(--s);background:#fff;border-radius:22px;font-size:calc(var(--s)*.6);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 0 rgba(0,0,0,.2);padding:0;line-height:1}
+.cell.win{background:#fde047;animation:aPulse .8s infinite}
+.board.c4{grid-template-columns:repeat(7,var(--s));--s:min(11vw,8.5vh,72px);gap:6px;background:#2563eb;padding:10px;border-radius:24px;box-shadow:0 8px 0 rgba(0,0,0,.25)}
+.board.c4 .cell{border-radius:50%;background:#1e3a8a;box-shadow:inset 0 4px 0 rgba(0,0,0,.3);font-size:calc(var(--s)*.8)}
+.board.c4 .cell.win{background:#fde047}
+.board.mem{grid-template-columns:repeat(4,var(--s));--s:min(21vw,16vh,120px)}
+.card{width:var(--s);height:var(--s);border-radius:20px;font-size:calc(var(--s)*.55);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fbbf24,#f97316);box-shadow:0 6px 0 rgba(0,0,0,.2);padding:0;line-height:1}
+.card.up{background:#fff;animation:aPop .3s}
+.card.done{background:rgba(255,255,255,.75);box-shadow:none}
+.rps-show{text-align:center;font-size:min(18vw,100px);line-height:1.2;color:#fff}
+.rps-picks{display:flex;justify-content:center;gap:14px;margin-top:14px}
+.rps-picks button{font-size:min(15vw,84px);background:#fff;border-radius:28px;padding:8px 16px;box-shadow:0 7px 0 rgba(0,0,0,.2);line-height:1.1}
+.rps-picks button.chosen{background:#fde047}
+.rps-picks button[disabled]:not(.chosen){opacity:.4}
+.gfoot{display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.gpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+#gPickOv .sheet{max-width:680px}
+/* chess */
+.board.chess{grid-template-columns:repeat(8,var(--s));--s:min(10.5vw,7vh,66px);gap:0;border:6px solid #7c4a2d;border-radius:12px;overflow:hidden;box-shadow:0 8px 0 rgba(0,0,0,.25)}
+.sq{width:var(--s);height:var(--s);display:flex;align-items:center;justify-content:center;font-size:calc(var(--s)*.78);line-height:1;padding:0;position:relative;font-family:"Segoe UI Symbol","Apple Symbols","DejaVu Sans",serif}
+.sq.lt{background:#f0d9b5}.sq.dk{background:#b58863}
+.sq.lm{box-shadow:inset 0 0 0 100px rgba(250,204,21,.4)}
+.sq.sel{box-shadow:inset 0 0 0 5px #22c55e}
+.sq.tg::after{content:"";position:absolute;width:32%;height:32%;border-radius:50%;background:rgba(34,197,94,.8)}
+.sq.chk{background:#ef4444}
+.pw{color:#fff;text-shadow:0 0 2px #000,0 0 2px #000,0 2px 1px #000}
+.pb{color:#1f1300;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+/* spin four */
+.board.spin{grid-template-columns:repeat(4,var(--s));--s:min(19vw,14vh,100px);gap:10px;background:#0f766e;padding:14px;border-radius:30px;box-shadow:0 8px 0 rgba(0,0,0,.25)}
+.board.spin .cell{border-radius:50%;background:#134e4a;box-shadow:inset 0 4px 0 rgba(0,0,0,.3);font-size:calc(var(--s)*.8)}
+.board.spin .cell.inner{background:#047857;outline:3px dashed rgba(255,255,255,.4);outline-offset:2px}
+.board.spin .cell.win{background:#fde047}
+.board.spin.spinning{animation:spinIt .8s cubic-bezier(.2,.9,.3,1)}
+@keyframes spinIt{from{transform:rotate(40deg)}to{transform:rotate(0)}}
+/* snakes & ladders */
+.snlwrap{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:8px}
+.board.snl{grid-template-columns:repeat(10,var(--s));--s:min(8.6vw,6.3vh,58px);gap:2px;background:#fff;padding:6px;border-radius:16px;margin:0}
+.snc{width:var(--s);height:var(--s);border-radius:6px;position:relative;display:flex;align-items:center;justify-content:center}
+.snc.a{background:#fde68a}.snc.b{background:#bbf7d0}.snc.snk{background:#fecaca}.snc.lad{background:#bfdbfe}
+.snn{position:absolute;top:1px;left:3px;font-size:calc(var(--s)*.22);color:#555;font-weight:700;line-height:1}
+.sni{font-size:calc(var(--s)*.4);display:flex;flex-direction:column;align-items:center;line-height:1;margin-top:4px}
+.sni small{font-size:calc(var(--s)*.21);font-weight:800;color:#333}
+.snp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--s)*.6);filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));line-height:1}
+.dicebox{display:flex;flex-direction:column;align-items:center;gap:12px;color:#fff;text-align:center;max-width:260px}
+.die{font-size:120px;line-height:1;background:#fff;color:var(--ink);border-radius:26px;width:140px;height:140px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 0 rgba(0,0,0,.2);font-family:"Segoe UI Symbol","Apple Symbols","DejaVu Sans",sans-serif}
+.die.rolling{animation:aShake .15s 4}
+.dicebox .btn[disabled]{opacity:.45}
+/* paddle ball */
+.pongwrap{position:relative;width:min(92vw,46vh);aspect-ratio:3/4;margin:10px auto 4px;touch-action:none}
+.pongwrap canvas{width:100%;height:100%;border-radius:22px;display:block;touch-action:none;box-shadow:0 8px 0 rgba(0,0,0,.25)}
+.pongwrap .btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:auto}
+
+.gtile{background:#fff;border-radius:24px;padding:16px 8px;font-weight:800;font-size:19px;display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 0 rgba(0,0,0,.15);border:3px solid #efeaff}
+.gtile .ge{font-size:min(46px,10vw);line-height:1.2;white-space:nowrap}
+.ginv{text-align:center}
+.ginv .ge{font-size:90px;line-height:1.2}
+/* ---------- profile lock ---------- */
+#plock .lkE{font-size:84px;line-height:1.1}
+.profbtn{display:flex;align-items:center;gap:12px;width:100%;background:#f2eeff;border-radius:18px;padding:12px 16px;font-weight:800;font-size:20px;margin-bottom:8px;text-align:left}
+.profbtn span{font-size:34px}
 </style>
 </head>
 <body>
@@ -185,9 +301,10 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     <div class="logo">📣 BuzzPal<small>Magic buttons that buzz your grown-up</small></div>
     <div class="panel" style="width:100%;margin-top:24px">
       <h2 style="margin-bottom:8px">👋 Hi! Who is setting up this device?</h2>
-      <p class="muted">Start on the <b>parent's phone</b> first. It will make a QR code for the kid's iPad.</p>
-      <button class="btn big" id="wParent" style="margin-bottom:12px">📱 I'm the parent</button>
+      <p class="muted">Start on the <b>parent's phone or computer</b> first. It will make a QR code for the kid's iPad.</p>
+      <button class="btn big" id="wParent" style="margin-bottom:12px">📱 I'm the parent (first time)</button>
       <button class="btn big ghost" id="wKid">🧒 This is my kid's iPad</button>
+      <p class="muted small" style="margin:14px 0 0">👪 <b>Second parent?</b> Don't start here – ask the first parent for an invite QR code (⚙️ Setup → Parents → 🔗).</p>
     </div>
   </div>
 </section>
@@ -201,6 +318,8 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
       <input class="inp" id="psKid" placeholder="e.g. Leo" required maxlength="20">
       <label class="f">What does your kid call you?</label>
       <input class="inp" id="psParent" placeholder="e.g. Dad, Mom, Papa" required maxlength="20">
+      <label class="f">Language for the talking voice</label>
+      <select class="inp" id="psLang"></select>
       <label class="f">Secret parent PIN (4 digits)</label>
       <input class="inp" id="psPin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="Locks the button editor on the iPad" required>
       <button class="btn big" style="margin-top:18px" type="submit">✨ Create our BuzzPal</button>
@@ -214,11 +333,26 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
   <div class="center">
     <div class="logo" style="font-size:44px">🧒 Connect iPad</div>
     <form class="panel" id="kjoinForm" style="width:100%;margin-top:18px">
-      <p>Easiest: on the parent's phone open <b>BuzzPal → ⚙️ Setup</b> and scan the QR code with this iPad's camera.</p>
+      <p>Easiest: on the parent's device open <b>BuzzPal → ⚙️ Setup</b> and scan the QR code with this iPad's camera.</p>
       <p class="muted">Or type the family code shown there:</p>
       <input class="inp" id="kjCode" placeholder="bz-xxxx-xxxx-xxxx" autocapitalize="off" autocomplete="off" spellcheck="false" required>
       <button class="btn big" style="margin-top:14px" type="submit">🔗 Connect</button>
       <button class="btn ghost" type="button" id="kjBack" style="margin-top:10px;width:100%">← Back</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ PROFILE LOCK ============ -->
+<section id="plock" class="hidden">
+  <div class="center">
+    <form class="panel" id="lkForm" style="width:100%;text-align:center">
+      <div class="lkE" id="lkE"></div>
+      <h2 id="lkName"></h2>
+      <p class="muted">🔒 This profile is locked with a password</p>
+      <input class="inp" type="password" id="lkPw" placeholder="Password" autocomplete="current-password">
+      <label class="row small" style="justify-content:center;margin:10px 0;font-weight:700"><input type="checkbox" id="lkRemember"> Remember on this device</label>
+      <button class="btn big" type="submit">🔓 Unlock</button>
+      <button class="btn ghost" type="button" id="lkSwitch" style="margin-top:10px;width:100%">👥 Switch profile</button>
     </form>
   </div>
 </section>
@@ -234,7 +368,8 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     <h1 id="kidTitle">Hi!</h1>
     <div class="status" id="kidStatus"><span class="dot"></span><span>connecting…</span></div>
   </div>
-  <div class="moods" id="moods"></div>
+  <div class="chiprow hidden" id="toRow"></div>
+  <div class="chiprow" id="moods"></div>
   <div class="recharge-wrap hidden" id="rechargeWrap">⚡ Recharging…<div class="recharge"><i id="rechargeBar"></i></div></div>
   <div class="grid" id="kgrid"></div>
   <div class="kid-foot">
@@ -248,15 +383,18 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
 <section id="parent" class="hidden">
   <div class="p-top">
     <h1>📣 BuzzPal</h1>
+    <button class="who" id="pWho" aria-label="Switch profile"></button>
     <button class="btn ghost hidden" id="pClose">✕ Back to buttons</button>
   </div>
   <div class="tabs" id="ptabs">
-    <button data-tab="inbox" class="on">📬 Inbox</button>
-    <button data-tab="reply">💬 Reply</button>
-    <button data-tab="buttons">🎨 Buttons</button>
-    <button data-tab="setup">⚙️ Setup</button>
+    <button data-tab="inbox" class="on"><b>📬</b>Inbox</button>
+    <button data-tab="reply"><b>💬</b>Reply</button>
+    <button data-tab="games"><b>🎮</b>Games</button>
+    <button data-tab="buttons"><b>🎨</b>Buttons</button>
+    <button data-tab="setup"><b>⚙️</b>Setup</button>
   </div>
 
+  <!-- INBOX -->
   <div data-pane="inbox">
     <div class="panel">
       <div class="row" style="justify-content:space-between"><h2 id="inboxTitle">Messages</h2><span class="status small" id="pStatus" style="background:#f2eeff;color:var(--ink)"><span class="dot"></span><span>…</span></span></div>
@@ -265,20 +403,32 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     </div>
   </div>
 
+  <!-- REPLY -->
   <div data-pane="reply" class="hidden">
-    <div class="panel">
-      <h2>💬 Quick replies</h2>
-      <p class="muted small">Tap one and it pops up on the iPad with an animation and a sound.</p>
-      <div class="rgrid" id="rgrid"></div>
+    <div class="bigchoice">
+      <button id="goPic"><span>📷</span>Send a picture</button>
+      <button id="goVoice"><span>🎤</span>Send a voice message</button>
     </div>
     <div class="panel">
+      <h2>💬 Quick replies</h2>
+      <p class="muted small">Tap one and it pops up on the iPad with an animation and a sound<span class="readnote"> – and gets read out loud</span>.</p>
+      <div class="rgrid" id="rgrid"></div>
+    </div>
+    <div class="panel" id="composer">
       <h2>✏️ Make your own</h2>
-      <div class="row" style="margin-top:8px;flex-wrap:nowrap">
+      <p class="muted small">Write something, add a picture 📷 or a voice message 🎤, pick an animation and a sound.</p>
+      <div class="row nowrap" style="margin-top:8px">
         <input class="inp" id="cEmoji" style="width:72px;text-align:center;font-size:28px;padding:6px" value="🦖" maxlength="8">
-        <input class="inp" id="cText" placeholder="Your message…" maxlength="80">
+        <input class="inp" id="cText" placeholder="Your message… (read out loud)" maxlength="120">
       </div>
       <div class="emoji-pick" id="cEmojiPick"></div>
-      <div class="row" style="margin-top:8px;flex-wrap:nowrap">
+      <div class="row" style="margin-top:12px">
+        <button class="btn ghost" id="cPicBtn">📷 Add picture</button>
+        <button class="btn ghost" id="cRec">🎤 Record voice</button>
+        <input type="file" id="cPic" accept="image/*" class="hidden">
+      </div>
+      <div class="att hidden" id="cAtt"></div>
+      <div class="row nowrap" style="margin-top:8px">
         <div style="flex:1"><label class="f">Animation</label><select class="inp" id="cAnim"></select></div>
         <div style="flex:1"><label class="f">Sound</label><select class="inp" id="cSound"></select></div>
       </div>
@@ -289,12 +439,38 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     </div>
   </div>
 
+  <!-- GAMES -->
+  <div data-pane="games" class="hidden">
+    <div class="panel">
+      <h2 id="gTabTitle">🎮 Play together</h2>
+      <p class="muted small">Pick a game – it pops up on the iPad and you take turns, live.</p>
+      <button class="btn big green hidden" id="gContinue" style="margin:8px 0 4px">▶️ Continue our game</button>
+      <div class="gpick" id="gTabGrid" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
   <div data-pane="buttons" class="hidden">
     <div class="panel">
-      <h2>🎛️ Kid's buttons</h2>
+      <h2>🎨 Kid's buttons</h2>
       <p class="muted small">Change the emoji, words and color. Then press <b>Save</b> and the iPad updates by itself.</p>
       <div id="editList"></div>
       <button class="btn ghost" id="addBtn" style="width:100%">➕ Add a button</button>
+    </div>
+    <div class="panel">
+      <h2>🗣️ Voice & talking</h2>
+      <label class="toggle"><span>🗣️ Read my messages out loud<small>Your replies are spoken on the iPad.</small></span><input type="checkbox" class="sw" id="vAuto"></label>
+      <label class="toggle"><span>❓ Help buttons<small>A “?” on each button that says it out loud.</small></span><input type="checkbox" class="sw" id="vHelp"></label>
+      <label class="toggle"><span>🎤 Kid can send voice messages<small>Adds a microphone button on the iPad.</small></span><input type="checkbox" class="sw" id="vKidMic"></label>
+      <label class="toggle"><span>🎮 Games button<small>Lets your kid start games with you.</small></span><input type="checkbox" class="sw" id="vGames"></label>
+      <label class="f">Language</label>
+      <select class="inp" id="vLang"></select>
+      <label class="f">Speed: <span id="vRateVal"></span></label>
+      <input type="range" id="vRate" min="0.6" max="1.3" step="0.05" style="width:100%">
+      <label class="f">Voice on <u>this</u> device</label>
+      <select class="inp" id="vVoice"></select>
+      <p class="muted small" style="margin:4px 0 0">Tip: pick this on the iPad itself (hold ⚙️ there). Nicer voices: iPad Settings → Accessibility → Spoken Content → Voices.</p>
+      <button class="btn ghost" id="vTest" style="margin-top:10px">🔈 Test the voice</button>
     </div>
     <div class="panel">
       <h2>🎭 Mood stickers</h2>
@@ -307,21 +483,22 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     <button class="btn big" id="saveCfg" style="margin-bottom:14px">💾 Save & send to iPad</button>
   </div>
 
+  <!-- SETUP -->
   <div data-pane="setup" class="hidden">
-    <div class="panel" id="setupSteps">
+    <div class="panel parent-only" id="setupSteps">
       <h2>📲 Connect everything</h2>
       <div class="step"><div class="n">1</div><div>
-        <b>Get notifications on this phone:</b> install the free <b>ntfy</b> app
+        <b>Get notifications on your phone:</b> install the free <b>ntfy</b> app
         (<a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener">iPhone</a> ·
         <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android</a>),
-        tap <b>＋</b> and subscribe to this topic:
-        <div style="margin:6px 0"><span class="code" id="kidTopic"></span></div>
-        <button class="btn ghost" data-copy="kidTopic">📋 Copy topic</button>
+        tap <b>＋</b> and subscribe to <b>your</b> topic:
+        <div style="margin:6px 0"><span class="code" id="myTopic"></span></div>
+        <button class="btn ghost" data-copy="myTopic">📋 Copy topic</button>
         <p class="muted small" style="margin:6px 0 0">Server stays the default <b>ntfy.sh</b>. Allow notifications when asked.</p>
       </div></div>
       <div class="step"><div class="n">2</div><div>
         <b>On your kid's iPad:</b> open the Camera and scan this code, or open the link in Safari:
-        <div style="margin:8px 0"><div id="qrbox"></div></div>
+        <div style="margin:8px 0"><div class="qrbox" id="qrbox"></div></div>
         <div><span class="code small" id="kidLink"></span></div>
         <button class="btn ghost" data-copy="kidLink" style="margin-top:6px">📋 Copy link</button>
       </div></div>
@@ -329,24 +506,34 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
         In Safari on the iPad tap <b>Share ⬆️ → Add to Home Screen</b>. Now it's an app! 🎉
       </div></div>
       <div class="step"><div class="n">4</div><div>
-        Add <b>this</b> page to your own home screen too, so you can reply with animations and edit buttons.
-        Your parent link: <span class="code small" id="parentLink"></span>
+        Add <b>this</b> page to your own home screen too. Your personal parent link:
+        <span class="code small" id="parentLink"></span>
         <button class="btn ghost" data-copy="parentLink" style="margin-top:6px">📋 Copy</button>
       </div></div>
     </div>
+
+    <div class="panel parent-only">
+      <h2>👪 Parents</h2>
+      <p class="muted small">Everyone here gets notifications and can reply. With more than one, your kid can choose who to buzz.</p>
+      <div id="parentList"></div>
+      <div class="row">
+        <button class="btn ghost" id="addParent">➕ Add another parent</button>
+        <button class="btn" id="saveParents" style="flex:1">💾 Save</button>
+      </div>
+    </div>
+
     <div class="panel">
-      <h2>👪 Names & PIN</h2>
+      <h2>🧒 Kid & PIN</h2>
       <label class="f">Kid's name</label><input class="inp" id="sKid" maxlength="20">
-      <label class="f">Your name (as your kid calls you)</label><input class="inp" id="sParent" maxlength="20">
       <label class="f">Parent PIN (unlocks editing on the iPad)</label><input class="inp" id="sPin" inputmode="numeric" maxlength="4">
       <button class="btn" id="saveNames" style="margin-top:14px;width:100%">💾 Save & send to iPad</button>
     </div>
     <div class="panel">
       <h2>🔐 Family code</h2>
       <p class="small">Your private code: <span class="code" id="famCode"></span></p>
-      <p class="muted small">Anyone with this code could see and send messages, so keep it secret. If it leaks, make a new one and connect both devices again.</p>
+      <p class="muted small">Anyone with this code could see and send messages, so keep it secret. If it leaks, reset and set everything up again.</p>
       <div class="row">
-        <button class="btn ghost" id="testNotif">🔔 Send test notification</button>
+        <button class="btn ghost parent-only" id="testNotif">🔔 Send test notification</button>
         <button class="btn danger" id="resetAll">♻️ Reset this device</button>
       </div>
     </div>
@@ -370,7 +557,43 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
     <div class="bigE" id="rvE"></div>
     <div class="msg" id="rvMsg"></div>
     <div class="tapsound hidden" id="rvTap">🔊 Tap to hear it!</div>
-    <button class="btn big" id="rvOk">Yay! 👍</button>
+    <div class="row nowrap">
+      <button class="btn big ghost" id="rvAgain" style="width:auto;flex:0 0 auto" aria-label="Hear again">🔊</button>
+      <button class="btn big" id="rvOk">👍</button>
+    </div>
+  </div>
+</div>
+
+<div class="ov hidden" id="recOv">
+  <div class="sheet recsheet">
+    <div class="recdot">🎤</div>
+    <div class="rectime" id="recTime">0:00</div>
+    <div class="recbar"><i id="recBar"></i></div>
+    <div class="row nowrap">
+      <button class="btn big danger" id="recCancel" style="width:auto;flex:0 0 auto" aria-label="Cancel">🗑️</button>
+      <button class="btn big green" id="recSend">✅ 🚀</button>
+    </div>
+  </div>
+</div>
+
+<div class="ov hidden" id="inviteOv">
+  <div class="sheet">
+    <h2 id="invTitle"></h2>
+    <div class="step"><div class="n">1</div><div>
+      On <b class="invName"></b>'s phone: install the free <b>ntfy</b> app, tap <b>＋</b> and subscribe to:
+      <div style="margin:6px 0"><span class="code" id="invTopic"></span></div>
+      <button class="btn ghost" data-copy="invTopic">📋 Copy topic</button>
+    </div></div>
+    <div class="step"><div class="n">2</div><div>
+      Scan this with <b class="invName"></b>'s phone camera (<u>not</u> the kid's iPad):
+      <div style="margin:8px 0"><div class="qrbox" id="invQr"></div></div>
+      <span class="code small" id="invLink"></span>
+      <button class="btn ghost" data-copy="invLink" style="margin-top:6px">📋 Copy link</button>
+    </div></div>
+    <div class="step"><div class="n">3</div><div>
+      In Safari on that phone: <b>Share ⬆️ → Add to Home Screen</b>. Done! 🎉
+    </div></div>
+    <button class="btn big" id="invClose">👍 Done</button>
   </div>
 </div>
 
@@ -385,16 +608,71 @@ label.f{display:block;font-weight:700;margin:10px 0 4px}
   </div>
 </div>
 
+<div class="ov hidden" id="gameOv">
+  <div class="ghead"><h2 id="gTitle"></h2><button class="gx" id="gClose" aria-label="Close">✖</button></div>
+  <div class="gplayers"><div class="gp" id="gpKid"></div><div class="vs">🆚</div><div class="gp" id="gpPar"></div></div>
+  <div class="gstatus" id="gStatus"></div>
+  <div id="gBoard"></div>
+  <div class="gfoot">
+    <button class="btn big hidden" id="gAgain" style="width:auto">🔄 Again!</button>
+    <button class="btn big ghost" id="gOther" style="width:auto">🎲 Other game</button>
+  </div>
+</div>
+
+<div class="ov hidden" id="gPickOv">
+  <div class="sheet">
+    <div class="row nowrap" style="justify-content:space-between"><h2>🎮 Let's play!</h2><button class="gx dark" id="gPickX" aria-label="Close">✖</button></div>
+    <div class="chips" id="gOpp" style="margin:12px 0"></div>
+    <div class="gpick" id="gPickGrid" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<div class="ov hidden" id="gInvOv">
+  <div class="sheet ginv">
+    <div class="ge" id="gInvE"></div>
+    <h2 id="gInvText"></h2>
+    <div class="row nowrap" style="margin-top:16px">
+      <button class="btn big ghost" id="gInvNo" style="width:auto;flex:0 0 auto" aria-label="Not now">✖</button>
+      <button class="btn big green" id="gInvYes">▶️ Play!</button>
+    </div>
+  </div>
+</div>
+
+<div class="ov hidden" id="profOv">
+  <div class="sheet">
+    <h2>👥 Who is using this device?</h2>
+    <div id="profList" style="margin-top:14px"></div>
+    <button class="btn ghost hidden" id="lockNow" style="width:100%;margin-top:6px">🔒 Lock my profile now</button>
+    <button class="btn ghost" id="profX" style="width:100%;margin-top:10px">Cancel</button>
+  </div>
+</div>
+
+<div class="ov hidden" id="pwOv">
+  <form class="sheet" id="pwForm">
+    <h2 id="pwTitle"></h2>
+    <p class="muted small">Only someone who knows this password can open this profile – its messages, replies and games.</p>
+    <div id="pwOldWrap"><label class="f">Current password</label><input class="inp" type="password" id="pwOld" autocomplete="current-password"></div>
+    <label class="f">New password</label><input class="inp" type="password" id="pwNew" autocomplete="new-password">
+    <label class="f">Repeat new password</label><input class="inp" type="password" id="pwNew2" autocomplete="new-password">
+    <div class="row" style="margin-top:14px">
+      <button type="button" class="btn danger hidden" id="pwRemove">🔓 Remove</button>
+      <button type="button" class="btn ghost" id="pwCancel">Cancel</button>
+      <button type="submit" class="btn" style="flex:1">💾 Save</button>
+    </div>
+  </form>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 'use strict';
 /* =========================================================
-   BuzzPal — kid buttons → parent's phone (via ntfy.sh)
+   BuzzPal — kid buttons → parents' phones (via ntfy.sh)
    Topics (all derived from one secret family code):
-     <code>-kid     kid  → parent  (parent's ntfy app subscribes)
-     <code>-reply   parent → kid   (animated replies)
-     <code>-config  parent → kid   (button layout, names, PIN)
+     <code>-kid        kid → first parent  (that parent's ntfy app subscribes)
+     <code>-<id>       kid → each extra parent
+     <code>-reply      parents → kid  (animated replies, pictures, voice)
+     <code>-config     parents → kid  (buttons, names, PIN, voice settings)
    ========================================================= */
 const NTFY = 'https://ntfy.sh';
 const $ = s => document.querySelector(s);
@@ -406,7 +684,7 @@ const LS = {
 };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone = o => JSON.parse(JSON.stringify(o));
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rnd = n => { const a='abcdefghjkmnpqrstuvwxyz23456789'; return [...crypto.getRandomValues(new Uint8Array(n))].map(b=>a[b%a.length]).join(''); };
 
 /* ---------------- data ---------------- */
 const COLORS = ['#ff7a59','#f59e0b','#22c55e','#14b8a6','#2bb3ff','#6366f1','#7c5cff','#ff5fa2','#ef4444','#a16207'];
@@ -432,7 +710,7 @@ const MOOD_ORDER = ['angry','sad','urgent','silly','question'];
 const SILLY_ENDS = ['…said the banana 🍌','*fart noise* 💨','beep boop 🤖','🦄🦄🦄','with extra cheese 🧀','…and also I am a dinosaur 🦖','wiggle wiggle 🐛','🐸 ribbit!','…in a pirate voice 🏴‍☠️','🥔 potato!'];
 function sillify(t){
   let i = 0;
-  const wavy = [...t].map(ch => /[a-z]/i.test(ch) ? ((i++ % 2) ? ch.toUpperCase() : ch.toLowerCase()) : ch).join('');
+  const wavy = [...t].map(ch => /[a-zæøåäöü]/i.test(ch) ? ((i++ % 2) ? ch.toUpperCase() : ch.toLowerCase()) : ch).join('');
   return wavy + ' ' + SILLY_ENDS[Math.floor(Math.random()*SILLY_ENDS.length)];
 }
 const ANIMS = {
@@ -460,40 +738,60 @@ const REPLIES = {
   silly: {e:'🤪', t:'You silly goose!',      a:'rainbow',  s:'pfft',    c:'#10b981'},
 };
 const PICK_EMOJI = ['🦖','🐶','🍦','🎉','🚀','🍕','⚽','🎮','🦄','🐱','🌈','👻','🤖','🍪','🐸','💪','😎','🥰','🙈','⭐'];
+const PARENT_EMOJI = ['🧔','👩','👨','👵','👴','🧑','👱‍♀️','🦸'];
+const LANGS = {
+  'en-US':'English (US)','en-GB':'English (UK)','nb-NO':'Norsk','sv-SE':'Svenska','da-DK':'Dansk','fi-FI':'Suomi','de-DE':'Deutsch',
+  'nl-NL':'Nederlands','fr-FR':'Français','es-ES':'Español','it-IT':'Italiano','pt-BR':'Português','pl-PL':'Polski'
+};
+function guessLang(){
+  const l = (navigator.language || 'en-US');
+  if (LANGS[l]) return l;
+  const base = l.slice(0,2).toLowerCase();
+  if (base === 'no' || base === 'nn' || base === 'nb') return 'nb-NO';
+  return Object.keys(LANGS).find(k => k.startsWith(base)) || 'en-US';
+}
+const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
 
 /* ---------------- state ---------------- */
 const params = new URLSearchParams(location.search);
 let family = cleanCode(params.get('family')) || LS.get('family', null);
 let role   = params.get('role') || LS.get('role', null);
+let me     = params.get('me') || LS.get('me', 'p1');
 if (cleanCode(params.get('family'))) LS.set('family', family);
 if (params.get('role')) LS.set('role', role);
+if (params.get('me')) LS.set('me', me);
 
-let cfg = Object.assign({
-  v:1, kidName:'', parentName:'', pin:'1234', cooldown:8,
-  moods: MOOD_ORDER.slice(), buttons: clone(DEFAULT_BUTTONS), updated:0
-}, LS.get('cfg', {}));
-
+function normalize(c){
+  c = Object.assign({ v:2, kidName:'', parentName:'', pin:'1234', cooldown:8, moods:MOOD_ORDER.slice(), buttons:clone(DEFAULT_BUTTONS), updated:0 }, c || {});
+  c.voice = Object.assign({ autoRead:true, help:true, kidMic:true, lang:guessLang(), rate:0.95 }, c.voice || {});
+  if (c.games === undefined) c.games = true;
+  if (!Array.isArray(c.parents) || !c.parents.length) c.parents = [{id:'p1', name:c.parentName || '', e:'🧔'}];
+  return c;
+}
+let cfg = normalize(LS.get('cfg', null));
+let draft = null;           // parent-mode edits not yet saved
+let editingOnKid = false;   // parent editor opened on the kid's iPad via PIN
 let curMood = 'normal';
+let sendTo = LS.get('sendTo', 'all');
 let cooldownUntil = 0;
-let audioReady = false;
 let es = null;
 
 function cleanCode(c){ if(!c) return null; c = String(c).trim().toLowerCase().replace(/[^a-z0-9-]/g,''); return c.length >= 10 ? c : null; }
-function newCode(){
-  const abc = 'abcdefghjkmnpqrstuvwxyz23456789';
-  const r = crypto.getRandomValues(new Uint8Array(12));
-  const s = [...r].map(b => abc[b % abc.length]).join('');
-  return `bz-${s.slice(0,4)}-${s.slice(4,8)}-${s.slice(8,12)}`;
-}
+function newCode(){ const s = rnd(12); return `bz-${s.slice(0,4)}-${s.slice(4,8)}-${s.slice(8,12)}`; }
 const T = {
-  kid:    () => family + '-kid',
+  parent: id => id === 'p1' ? family + '-kid' : family + '-' + id,
   reply:  () => family + '-reply',
   config: () => family + '-config',
+  game:   () => family + '-game',
 };
-function appUrl(r){
+function parentById(id){ return cfg.parents.find(p => p.id === id) || cfg.parents[0]; }
+function pName(id){ const p = parentById(id); return (p && p.name) || 'your grown-up'; }
+function myParent(){ return cfg.parents.find(p => p.id === me) || cfg.parents[0]; }
+function appUrl(r, meId){
   const u = new URL(location.href);
   u.search = ''; u.hash = '';
   u.searchParams.set('family', family); u.searchParams.set('role', r);
+  if (r === 'parent') u.searchParams.set('me', meId || me);
   return u.toString();
 }
 function saveCfg(){ LS.set('cfg', cfg); }
@@ -514,18 +812,22 @@ function confirmBox(title, text){
 }
 
 /* ---------------- sound (Web Audio, no files needed) ---------------- */
-let ac = null;
+let ac = null, audioReady = false;
+const player = new Audio();         // plays voice messages (unlocked on first tap for iOS)
+player.playsInline = true;
+const SILENT = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
 function audio(){
   if (!ac){ try{ ac = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ return null; } }
   if (ac.state === 'suspended') ac.resume();
   return ac;
 }
 function unlockAudio(){
-  const a = audio(); if (!a) return;
-  // play a silent blip so iOS fully unlocks the audio
-  const o = a.createOscillator(), g = a.createGain(); g.gain.value = 0.0001;
-  o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime + 0.02);
+  const a = audio();
+  if (audioReady) return;
   audioReady = true;
+  if (a){ const o = a.createOscillator(), g = a.createGain(); g.gain.value = 0.0001; o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime + 0.02); }
+  try { player.src = SILENT; player.play().catch(()=>{}); } catch(e){}
+  try { if ('speechSynthesis' in window){ const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch(e){}
 }
 document.addEventListener('pointerdown', unlockAudio, {passive:true});
 document.addEventListener('touchend', unlockAudio, {passive:true});
@@ -544,7 +846,7 @@ function tone(freq, start, dur, {type='sine', vol=0.25, to=null, attack=0.01} = 
 function noise(start, dur, {from=400, to=4000, vol=0.3} = {}){
   const a = audio(); if (!a) return;
   const t0 = a.currentTime + start;
-  const buf = a.createBuffer(1, a.sampleRate * dur, a.sampleRate);
+  const buf = a.createBuffer(1, Math.max(1, Math.floor(a.sampleRate * dur)), a.sampleRate);
   const d = buf.getChannelData(0); for (let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
   const src = a.createBufferSource(); src.buffer = buf;
   const f = a.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2;
@@ -553,7 +855,7 @@ function noise(start, dur, {from=400, to=4000, vol=0.3} = {}){
   g.gain.exponentialRampToValueAtTime(vol, t0 + dur*0.4); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
   src.connect(f).connect(g).connect(a.destination); src.start(t0);
 }
-const N = n => 440 * Math.pow(2, (n - 69) / 12); // midi → Hz
+const N = n => 440 * Math.pow(2, (n - 69) / 12);
 function playSound(name){
   switch(name){
     case 'ding':    tone(N(88),0,1.2,{vol:.3}); tone(N(100),0,.8,{vol:.08}); break;
@@ -574,8 +876,90 @@ function playSound(name){
                       o.connect(g).connect(a.destination); o.start(t0); l.start(t0); o.stop(t0+.8); l.stop(t0+.8); } break;
     case 'kiss':    tone(900,0,.12,{to:2200,vol:.25}); noise(.05,.08,{from:3000,to:6000,vol:.15}); tone(N(79),.3,.5,{vol:.15}); tone(N(84),.45,.6,{vol:.15}); break;
     case 'send':    tone(N(72),0,.12,{vol:.2}); tone(N(79),.08,.2,{vol:.2}); noise(.05,.35,{from:500,to:4000,vol:.12}); break;
+    case 'tock':    tone(N(81),0,.09,{type:'square',vol:.1}); break;
+    case 'tock2':   tone(N(74),0,.09,{type:'square',vol:.1}); break;
+    case 'roll':    for(let i=0;i<5;i++) noise(i*.09,.06,{from:1500,to:2500,vol:.25}); break;
     case 'error':   tone(N(55),0,.25,{type:'square',vol:.08}); tone(N(50),.2,.35,{type:'square',vol:.08}); break;
   }
+}
+
+/* ---------------- talking voice (speech synthesis) ---------------- */
+const hasTTS = 'speechSynthesis' in window;
+let voices = [];
+function loadVoices(){ if (hasTTS){ voices = speechSynthesis.getVoices() || []; fillVoiceSelect(); } }
+function langVoices(lang){
+  const L = (lang || cfg.voice.lang || 'en-US').toLowerCase(), base = L.slice(0,2);
+  const alias = base === 'nb' ? ['nb','no','nn'] : [base];
+  const norm = v => (v.lang || '').toLowerCase().replace('_','-');
+  const exact = voices.filter(v => norm(v) === L);
+  const loose = voices.filter(v => alias.some(a => norm(v).startsWith(a)) && norm(v) !== L);
+  return [...exact, ...loose];
+}
+function pickVoice(){
+  const chosen = LS.get('voiceName', '');
+  if (chosen){ const v = voices.find(v => v.name === chosen); if (v) return v; }
+  const c = langVoices();
+  return c.find(v => /premium|enhanced|natural|neural/i.test(v.name)) || c.find(v => v.localService) || c[0] || null;
+}
+const stripEmoji = t => String(t || '').replace(/[\p{Extended_Pictographic}‍️⃣]/gu, ' ').replace(/\*/g,'').replace(/\s+/g,' ').trim();
+function say(text, onend){
+  let done = false;
+  const fin = () => { if (!done){ done = true; onend && onend(); } };
+  const clean = stripEmoji(text);
+  if (!hasTTS || !clean){ fin(); return; }
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean);
+    const v = pickVoice();
+    if (v){ u.voice = v; u.lang = v.lang; } else u.lang = cfg.voice.lang;
+    u.rate = +cfg.voice.rate || 0.95; u.pitch = 1.05;
+    u.onend = fin; u.onerror = fin;
+    setTimeout(fin, 2500 + clean.length * 110);   // safety net if onend never fires
+    speechSynthesis.speak(u);
+  } catch(e){ fin(); }
+}
+function playVoice(url){
+  try { player.pause(); player.src = url; player.currentTime = 0; return player.play().then(() => true, () => false); }
+  catch(e){ return Promise.resolve(false); }
+}
+
+/* ---------------- recording (voice messages) ---------------- */
+const Rec = {
+  rec:null, stream:null, chunks:[], started:0,
+  async start(){
+    this.stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const mime = ['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg'].find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
+    this.rec = new MediaRecorder(this.stream, mime ? {mimeType:mime} : undefined);
+    this.chunks = [];
+    this.rec.ondataavailable = e => { if (e.data && e.data.size) this.chunks.push(e.data); };
+    this.rec.start(250);
+    this.started = Date.now();
+  },
+  stop(){
+    return new Promise(res => {
+      if (!this.rec || this.rec.state === 'inactive'){ res(null); return; }
+      this.rec.onstop = () => {
+        this.stream.getTracks().forEach(t => t.stop());
+        const type = (this.rec.mimeType || 'audio/mp4').split(';')[0];
+        const blob = new Blob(this.chunks, {type});
+        res({blob, type, secs: Math.round((Date.now() - this.started)/1000), ext: type.includes('webm') ? 'webm' : type.includes('ogg') ? 'ogg' : 'm4a'});
+      };
+      this.rec.stop();
+    });
+  },
+  active(){ return !!(this.rec && this.rec.state === 'recording'); }
+};
+const fmtTime = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+async function shrinkImage(file, max=1280){
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth*s); c.height = Math.round(img.naturalHeight*s);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise(res => c.toBlob(res, 'image/jpeg', 0.82));
+  } finally { URL.revokeObjectURL(url); }
 }
 
 /* ---------------- animations ---------------- */
@@ -600,62 +984,88 @@ function rise(chars, n=18){
     p.textContent = chars[i % chars.length];
     p.style.fontSize = (34 + Math.random()*30) + 'px';
     p.style.left = (Math.random()*100) + 'vw';
-    p.style.top = '110vh';
-    p.style.animation = `none`;
+    p.style.top = '110vh'; p.style.animation = 'none';
     p.animate([{transform:'translateY(0)'},{transform:`translateY(-130vh) translateX(${Math.random()*80-40}px)`}],
       {duration: 3000 + Math.random()*2500, delay: Math.random()*1200, easing:'ease-out', fill:'forwards'});
     document.body.appendChild(p);
     setTimeout(() => p.remove(), 7000);
   }
 }
-function runAnim(el, a){
-  el.className = 'bigE';
-  void el.offsetWidth; // restart animation
-  const cls = {pop:'a-pop', shake:'a-shake', wobble:'a-wobble', spin:'a-spin', bounce:'a-bounce', zoom:'a-zoom', ring:'a-ring',
-               zzz:'a-float', hearts:'a-pulse', stars:'a-pop', confetti:'a-pop', rainbow:'a-bounce', balloons:'a-float'}[a] || 'a-pop';
-  el.classList.add(cls);
-  $('#revealCard').classList.toggle('rainbow-bg', a === 'rainbow');
+function particles(a){
   if (a === 'confetti') rain([], 70, {confetti:true});
   if (a === 'hearts')   rain(['❤️','💖','💕','💗','😘'], 40);
   if (a === 'stars')    rain(['⭐','🌟','✨','💫'], 40);
   if (a === 'zzz')      rise(['💤','🌙','⭐'], 16);
   if (a === 'balloons') rise(['🎈','🎈','🎉','🎈'], 22);
   if (a === 'rainbow')  rain(['🌈','🦄','✨'], 24);
+}
+function runAnim(el, a, {gentle=false} = {}){
+  el.className = 'bigE';
+  void el.offsetWidth;
+  const cls = {pop:'a-pop', shake:'a-shake', wobble:'a-wobble', spin:'a-spin', bounce:'a-bounce', zoom:'a-zoom', ring:'a-ring',
+               zzz:'a-float', hearts:'a-pulse', stars:'a-pop', confetti:'a-pop', rainbow:'a-bounce', balloons:'a-float'}[a] || 'a-pop';
+  el.classList.add(gentle ? 'a-pop' : cls);   // pictures only "pop" so they stay easy to look at
+  $('#revealCard').classList.toggle('rainbow-bg', a === 'rainbow' && !gentle);
+  particles(a);
   if (a === 'shake' && navigator.vibrate) navigator.vibrate([100,50,100]);
 }
 
-/* ---------------- reply reveal (kid side, also used for parent preview) ---------------- */
-let revealQueue = [], revealing = false, pendingSound = null;
-function showReveal(r, from){
-  revealQueue.push({r, from});
-  if (!revealing) nextReveal();
+/* ---------------- reply reveal (kid side; also parent preview) ---------------- */
+let revealQueue = [], current = null, needTap = false;
+function showReveal(r, fromLabel, speaker){
+  revealQueue.push({r, fromLabel, speaker});
+  if (!current) nextReveal();
 }
 function nextReveal(){
-  const item = revealQueue.shift();
-  if (!item){ revealing = false; $('#reveal').classList.add('hidden'); return; }
-  revealing = true;
-  const {r, from} = item;
-  $('#rvFrom').textContent = from;
-  $('#rvE').textContent = r.e || '💬';
-  $('#rvMsg').textContent = r.t || '';
+  player.pause();
+  current = revealQueue.shift() || null;
+  if (!current){ $('#reveal').classList.add('hidden'); if (hasTTS) speechSynthesis.cancel(); return; }
+  const {r, fromLabel} = current;
+  $('#rvFrom').textContent = fromLabel;
+  const big = $('#rvE'); big.innerHTML = '';
+  if (r.img){
+    const im = new Image(); im.alt = '';
+    im.onerror = () => { big.textContent = r.e || '🖼️'; };
+    im.src = r.img; big.appendChild(im);
+  } else big.textContent = r.e || '💬';
+  $('#rvMsg').textContent = r.t || (r.voice ? '🎤' : '');
   $('#reveal').classList.remove('hidden');
-  runAnim($('#rvE'), r.a);
-  if (r.s && r.s !== 'none'){
-    if (audioReady && ac && ac.state === 'running'){ playSound(r.s); $('#rvTap').classList.add('hidden'); pendingSound = null; }
-    else { pendingSound = r.s; $('#rvTap').classList.remove('hidden'); }
-  } else $('#rvTap').classList.add('hidden');
+  runAnim(big, r.a, {gentle: !!r.img});
+  needTap = !audioReady;
+  $('#rvTap').classList.toggle('hidden', !needTap);
+  if (!needTap) playReveal();
+}
+function playReveal(){
+  if (!current) return;
+  const item = current, {r, speaker} = item;
+  const hasFx = r.s && r.s !== 'none';
+  if (hasFx) playSound(r.s);
+  setTimeout(() => {
+    if (current !== item) return;
+    const words = cfg.voice.autoRead ? [speaker, r.t].filter(Boolean).join('. ') : '';
+    say(words, () => {
+      if (r.voice && current === item) playVoice(r.voice).then(ok => { if (!ok) { needTap = true; $('#rvTap').classList.remove('hidden'); } });
+    });
+  }, hasFx ? 1000 : 150);
 }
 $('#revealCard').addEventListener('click', e => {
-  if (pendingSound && e.target.id !== 'rvOk'){ unlockAudio(); playSound(pendingSound); pendingSound = null; $('#rvTap').classList.add('hidden'); }
+  if (e.target.closest('button')) return;
+  if (needTap){ unlockAudio(); needTap = false; $('#rvTap').classList.add('hidden'); player.pause(); playReveal(); }
 });
-$('#rvOk').addEventListener('click', () => {
-  if (pendingSound){ unlockAudio(); playSound(pendingSound); pendingSound = null; }
-  nextReveal();
-});
+$('#rvAgain').addEventListener('click', () => { unlockAudio(); needTap = false; $('#rvTap').classList.add('hidden'); player.pause(); playReveal(); });
+$('#rvOk').addEventListener('click', () => { unlockAudio(); if (hasTTS) speechSynthesis.cancel(); nextReveal(); });
 
 /* ---------------- ntfy helpers ---------------- */
 async function publish(body){
   const res = await fetch(NTFY + '/', { method:'POST', body: JSON.stringify(body) });
+  if (!res.ok) throw new Error('ntfy ' + res.status);
+  return res.json().catch(() => ({}));
+}
+// Upload a picture / voice message as an ntfy attachment.
+// The body has no content type, so the browser sends a simple CORS request.
+async function publishFile(topic, blob, filename, extra){
+  const q = new URLSearchParams(Object.assign({filename}, extra));
+  const res = await fetch(`${NTFY}/${topic}?${q}`, { method:'POST', body: new Blob([blob]) });
   if (!res.ok) throw new Error('ntfy ' + res.status);
   return res.json().catch(() => ({}));
 }
@@ -678,62 +1088,107 @@ function setStatus(el, state, labels){
   if (state === 'off') el.classList.add('off');
   el.querySelector('span:last-child').textContent = labels[state];
 }
+function applyConfig(p){
+  if (!(p && p.k === 'config' && p.cfg)) return false;
+  if ((p.cfg.updated || 0) <= (cfg.updated || 0)) return false;
+  cfg = normalize(Object.assign(cfg, p.cfg)); saveCfg();
+  return true;
+}
 
 /* =========================================================
    KID MODE
    ========================================================= */
+function targets(){
+  if (cfg.parents.length === 1 || sendTo === 'all' || !cfg.parents.some(p => p.id === sendTo)) return cfg.parents;
+  return cfg.parents.filter(p => p.id === sendTo);
+}
+function targetName(){
+  const t = targets();
+  return t.length === 1 ? (t[0].name || 'your grown-up') : (t.length === 2 ? 'both' : 'everyone');
+}
 function renderKid(){
   $('#kidTitle').textContent = cfg.kidName ? `Hi ${cfg.kidName}! 👋` : 'Hi! 👋';
+  // who to send to
+  const many = cfg.parents.length > 1;
+  $('#toRow').classList.toggle('hidden', !many);
+  if (many){
+    if (sendTo !== 'all' && !cfg.parents.some(p => p.id === sendTo)) sendTo = 'all';
+    $('#toRow').innerHTML = `<span class="rowlabel">📨</span>` +
+      cfg.parents.map(p => `<button class="to ${sendTo===p.id?'sel':''}" data-to="${esc(p.id)}"><span class="me">${esc(p.e||'🙂')}</span>${esc(p.name||'?')}</button>`).join('') +
+      `<button class="to ${sendTo==='all'?'sel':''}" data-to="all"><span class="me">👪</span>${cfg.parents.length === 2 ? 'Both' : 'Everyone'}</button>`;
+  } else $('#toRow').innerHTML = '';
   // moods
   const enabled = ['normal', ...MOOD_ORDER.filter(m => cfg.moods.includes(m))];
   if (!enabled.includes(curMood)) curMood = 'normal';
   $('#moods').innerHTML = enabled.length > 1 ? enabled.map(k =>
     `<button class="mood ${k===curMood?'sel':''}" data-mood="${k}"><span class="me">${MOODS[k].e}</span>${MOODS[k].n}</button>`).join('') : '';
   // buttons
-  $('#kgrid').innerHTML = cfg.buttons.map((b,i) =>
-    `<button class="kbtn" data-i="${i}" style="background:${esc(b.c)}"><span class="e">${esc(b.e)}</span><span class="t">${esc(b.t)}</span></button>`).join('');
+  const help = cfg.voice.help ? '<span class="help" role="button" aria-label="Say it out loud">?</span>' : '';
+  let html = cfg.buttons.map((b,i) =>
+    `<button class="kbtn" data-i="${i}" style="background:${esc(b.c)}">${help}<span class="e">${esc(b.e)}</span><span class="t">${esc(b.t)}</span></button>`).join('');
+  if (cfg.games)
+    html += `<button class="kbtn game" data-game="1">${help}<span class="e">🎮</span><span class="t">Let's play!</span></button>`;
+  if (cfg.voice.kidMic && canRecord)
+    html += `<button class="kbtn mic" data-mic="1">${help}<span class="e">🎤</span><span class="t">Talk to ${esc(targetName())}</span></button>`;
+  $('#kgrid').innerHTML = html;
   updateCooldownUI();
 }
+$('#toRow').addEventListener('click', e => {
+  const b = e.target.closest('.to'); if (!b) return;
+  sendTo = b.dataset.to; LS.set('sendTo', sendTo);
+  playSound('ding');
+  if (cfg.voice.help) say(sendTo === 'all' ? (cfg.parents.length === 2 ? 'Both' : 'Everyone') : pName(sendTo));
+  renderKid();
+});
 $('#moods').addEventListener('click', e => {
   const b = e.target.closest('.mood'); if (!b) return;
   curMood = (curMood === b.dataset.mood && b.dataset.mood !== 'normal') ? 'normal' : b.dataset.mood;
   playSound({normal:'ding', angry:'bonk', sad:'hmm', urgent:'ring', silly:'pfft', question:'boing'}[curMood]);
+  if (cfg.voice.help){ const m = curMood; setTimeout(() => say(MOODS[m].n), 400); }
   renderKid();
 });
+function cooldownBlocked(el){
+  if (Date.now() < cooldownUntil){ playSound('error'); el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),500); return true; }
+  return false;
+}
+function startCooldown(){ cooldownUntil = Date.now() + (cfg.cooldown || 0) * 1000; updateCooldownUI(); }
 $('#kgrid').addEventListener('click', async e => {
   const el = e.target.closest('.kbtn'); if (!el) return;
-  if (Date.now() < cooldownUntil){ playSound('error'); el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),500); return; }
+  // "?" bubble: only say the button out loud, don't send
+  if (e.target.closest('.help')){
+    const text = el.dataset.mic ? `Talk to ${targetName()}` : el.dataset.game ? "Let's play a game!" : cfg.buttons[+el.dataset.i].t;
+    el.classList.remove('speaking'); void el.offsetWidth; el.classList.add('speaking');
+    say(text);
+    return;
+  }
+  if (el.dataset.game){ kidGameTile(); return; }
+  if (cooldownBlocked(el)) return;
+  if (el.dataset.mic){ startKidRecording(); return; }
   const b = cfg.buttons[+el.dataset.i];
   const mood = MOODS[curMood];
   const text = mood.fx ? mood.fx(b.t) : b.t;
   const isQ = curMood === 'question' || /\?\s*$/.test(b.t);
-  const replyUrl = `${NTFY}/${T.reply()}`;
-  const act = (key) => ({ action:'http', label:`${REPLIES[key].e} ${REPLIES[key].t}`.slice(0,24), url:replyUrl, method:'POST',
-                          body: JSON.stringify({k:'reply', id:key}), clear:true });
-  const msg = {
-    topic: T.kid(),
-    title: `${cfg.kidName || 'Your kid'}: ${b.e} ${curMood !== 'normal' ? '(' + mood.n.toLowerCase() + ')' : ''}`.trim(),
-    message: text,
-    tags: mood.tags,
-    priority: mood.prio,
-    click: appUrl('parent'),
-    actions: isQ ? [act('yes'), act('no'), act('maybe')] : [act('ok'), act('love'), act('wait')]
-  };
+  const act = (key, pid) => ({ action:'http', label:`${REPLIES[key].e} ${REPLIES[key].t}`.slice(0,24), url:`${NTFY}/${T.reply()}`, method:'POST',
+                               body: JSON.stringify({k:'reply', id:key, from:pid}), clear:true });
   el.classList.remove('sent'); void el.offsetWidth; el.classList.add('sent');
   playSound('send');
   try {
-    await publish(msg);
-    flyAway(el, b.e);
-    toast(`✅ Sent to ${cfg.parentName || 'your grown-up'}!`);
-    cooldownUntil = Date.now() + (cfg.cooldown || 0) * 1000;
+    await Promise.all(targets().map(p => publish({
+      topic: T.parent(p.id),
+      title: `${cfg.kidName || 'Your kid'}: ${b.e} ${curMood !== 'normal' ? '(' + mood.n.toLowerCase() + ')' : ''}`.trim(),
+      message: text, tags: mood.tags, priority: mood.prio, click: appUrl('parent', p.id),
+      actions: (isQ ? ['yes','no','maybe'] : ['ok','love','wait']).map(k => act(k, p.id))
+    })));
+    flyAway(el);
+    toast(`✅ Sent to ${targetName()}!`);
+    startCooldown();
     if (curMood !== 'normal'){ curMood = 'normal'; renderKid(); }
-    updateCooldownUI();
   } catch(err){
     playSound('error'); el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),500);
     toast('😬 Oops, it didn\'t send. Is the wifi on? Try again!', 3500);
   }
 });
-function flyAway(el, emoji){
+function flyAway(el){
   const r = el.getBoundingClientRect();
   const f = document.createElement('div'); f.className = 'flyer'; f.textContent = '🚀';
   f.style.left = (r.left + r.width/2 - 35) + 'px'; f.style.top = (r.top + r.height/2 - 35) + 'px';
@@ -752,32 +1207,83 @@ function updateCooldownUI(){
   }
 }
 
+/* kid voice messages */
+const KID_MAX = 30;
+let kidRecTimer = null;
+async function startKidRecording(){
+  try { await Rec.start(); }
+  catch(e){ playSound('error'); toast('🎤 The microphone is not allowed. Ask a grown-up to allow it in Settings.', 4000); return; }
+  $('#recOv').classList.remove('hidden');
+  const tick = () => {
+    const ms = Date.now() - Rec.started;
+    $('#recTime').textContent = fmtTime(Math.floor(ms/1000));
+    $('#recBar').style.width = Math.min(100, ms/(KID_MAX*10)) + '%';
+    if (ms >= KID_MAX*1000) { sendKidRecording(); return; }
+    kidRecTimer = setTimeout(tick, 200);
+  };
+  tick();
+}
+async function sendKidRecording(){
+  clearTimeout(kidRecTimer);
+  const r = await Rec.stop();
+  $('#recOv').classList.add('hidden');
+  if (!r || r.blob.size < 500){ toast('🤔 That was too short. Try again!'); return; }
+  playSound('send');
+  toast('📤 Sending…', 8000);
+  try {
+    for (const p of targets()){
+      await publishFile(T.parent(p.id), r.blob, `voice-${Date.now()}.${r.ext}`, {
+        title: `${cfg.kidName || 'Your kid'}: 🎤 voice message`,
+        message: `🎤 ${cfg.kidName || 'Your kid'} sent you a voice message (${r.secs}s). Tap to listen.`,
+        tags: 'microphone', priority: '4', click: appUrl('parent', p.id)
+      });
+    }
+    toast(`✅ Sent to ${targetName()}!`);
+    startCooldown();
+  } catch(e){ playSound('error'); toast('😬 Oops, it didn\'t send. Is the wifi on?', 3500); }
+}
+$('#recSend').onclick = () => sendKidRecording();
+$('#recCancel').onclick = async () => { clearTimeout(kidRecTimer); await Rec.stop(); $('#recOv').classList.add('hidden'); playSound('bonk'); };
+
+function replyFromPayload(p, m){
+  const r = p.id && REPLIES[p.id] ? Object.assign({}, REPLIES[p.id]) : {e:p.e, t:p.t, a:p.a, s:p.s};
+  r.from = p.from || 'p1';
+  const att = m && m.attachment;
+  if (att && att.url){
+    const isImg = p.kind === 'img' || /^image\//.test(att.type || '');
+    if (isImg) r.img = att.url; else r.voice = att.url;
+  }
+  return r;
+}
+function revealReply(r){
+  const p = parentById(r.from);
+  showReveal(r, `💌 From ${p.e || ''} ${p.name || 'your grown-up'}`.replace(/\s+/g,' '), p.name || '');
+}
 function kidIncoming(m){
   const seen = LS.get('seen', []);
   if (seen.includes(m.id)) return;
-  LS.set('seen', [m.id, ...seen].slice(0, 40));
+  LS.set('seen', [m.id, ...seen].slice(0, 60));
   LS.set('since', m.time);
   let p; try { p = JSON.parse(m.message); } catch(e){ return; }
-  if (m.topic === T.config() && p.k === 'config' && p.cfg){
-    if ((p.cfg.updated || 0) > (cfg.updated || 0)){
-      cfg = Object.assign(cfg, p.cfg); saveCfg(); renderKid();
-      if (Date.now()/1000 - m.time < 60) toast('✨ New buttons arrived!');
-    }
+  if (m.topic === T.game()){ gameIncoming(p, m); return; }
+  if (m.topic === T.config()){
+    if (applyConfig(p)){ renderKid(); if (Date.now()/1000 - m.time < 60) toast('✨ New buttons arrived!'); }
+    return;
   }
   if (m.topic === T.reply() && p.k === 'reply'){
-    const r = p.id && REPLIES[p.id] ? REPLIES[p.id] : {e:p.e, t:p.t, a:p.a, s:p.s};
+    const r = replyFromPayload(p, m);
     LS.set('lastReply', r);
     showLastReply();
-    // replies that arrived while the app was closed: only show if fairly fresh
-    if (Date.now()/1000 - m.time < 3*3600) showReveal(r, `💌 From ${cfg.parentName || 'your grown-up'}`);
+    if (Date.now()/1000 - m.time < 3*3600) revealReply(r);
   }
 }
 function showLastReply(){
   const r = LS.get('lastReply', null);
   const el = $('#lastReply');
   if (!r){ el.classList.add('hidden'); return; }
-  el.classList.remove('hidden'); el.textContent = `Last answer: ${r.e} ${r.t}`;
-  el.onclick = () => showReveal(r, `💌 From ${cfg.parentName || 'your grown-up'}`);
+  el.classList.remove('hidden');
+  el.textContent = `🔁 ${r.img ? '📷' : r.voice ? '🎤' : r.e || '💬'} ${r.t || ''}`;
+  el.onclick = () => revealReply(r);
 }
 function startKid(){
   editingOnKid = false;
@@ -789,8 +1295,8 @@ function startKid(){
 }
 function connectKid(){
   const since = LS.get('since', null) || '12h';
-  subscribe([T.reply(), T.config()], since, kidIncoming, st =>
-    setStatus($('#kidStatus'), st, {on:`connected to ${cfg.parentName || 'grown-up'}`, wait:'connecting…', off:'no wifi?'}));
+  subscribe([T.reply(), T.config(), T.game()], since, kidIncoming, st =>
+    setStatus($('#kidStatus'), st, {on:'connected ✓', wait:'connecting…', off:'no wifi?'}));
 }
 $('#installTipX').onclick = () => { LS.set('tipDone', true); $('#installTip').classList.add('hidden'); };
 
@@ -804,10 +1310,7 @@ gear.addEventListener('pointerdown', startHold);
 gear.addEventListener('contextmenu', e => e.preventDefault());
 
 let pinBuf = '';
-function openPin(){
-  pinBuf = ''; drawPin();
-  $('#pinOv').classList.remove('hidden');
-}
+function openPin(){ pinBuf = ''; drawPin(); $('#pinOv').classList.remove('hidden'); }
 function drawPin(){ $$('#pindots i').forEach((d,i) => d.classList.toggle('f', i < pinBuf.length)); }
 $('#pinpad').innerHTML = [1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k => k === '' ? '<span></span>' : `<button data-k="${k}">${k}</button>`).join('');
 $('#pinpad').addEventListener('click', e => {
@@ -822,34 +1325,47 @@ $('#pinpad').addEventListener('click', e => {
 $('#pinCancel').onclick = () => $('#pinOv').classList.add('hidden');
 
 /* =========================================================
-   PARENT MODE (parent's phone, or unlocked on the iPad)
+   PARENT MODE (parent's phone/computer, or unlocked on the iPad)
    ========================================================= */
-let editingOnKid = false;
-let draft = null;
 const inbox = [];
 
 function openParent(onKid){
   editingOnKid = !!onKid;
   show('parent');
   $('#pClose').classList.toggle('hidden', !onKid);
-  $$('#ptabs button').forEach(b => b.classList.toggle('hidden', onKid && (b.dataset.tab === 'inbox' || b.dataset.tab === 'reply')));
+  $('#pWho').classList.toggle('hidden', !!onKid);
+  $$('#ptabs button').forEach(b => b.classList.toggle('hidden', onKid && ['inbox','reply','games'].includes(b.dataset.tab)));
+  $$('.parent-only').forEach(el => el.classList.toggle('hidden', !!onKid));
   draft = clone(cfg);
-  renderEditor(); renderSetup(); renderReplies();
+  renderWho(); renderEditor(); renderSetup(); renderReplies();
   tab(onKid ? 'buttons' : (LS.get('ptab', 'inbox')));
 }
-$('#pClose').onclick = () => { if (editingOnKid){ startKid(); } };
+function renderWho(){ const p = myParent(); $('#pWho').textContent = `${p.e || ''} ${p.name || ''}`.trim() || 'Parent'; }
+$('#pClose').onclick = () => { if (editingOnKid) startKid(); };
+$('#pWho').onclick = () => openProfiles();
 
 function tab(name){
   $$('#ptabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
   $$('[data-pane]').forEach(p => p.classList.toggle('hidden', p.dataset.pane !== name));
   if (!editingOnKid) LS.set('ptab', name);
   if (name === 'setup') drawQR();
+  if (name === 'games') renderGamesTab();
 }
 $('#ptabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) tab(b.dataset.tab); });
 
 /* ---- inbox ---- */
 function parentIncoming(m){
-  if (m.topic !== T.kid()) return;
+  if (m.topic === T.config()){
+    let p; try { p = JSON.parse(m.message); } catch(e){ return; }
+    if (applyConfig(p)){
+      const t = $('#ptabs .on') && $('#ptabs .on').dataset.tab;
+      if (t !== 'buttons' && t !== 'setup'){ draft = clone(cfg); renderEditor(); renderSetup(); }
+      renderWho(); renderInbox(); renderReplies();
+    }
+    return;
+  }
+  if (m.topic === T.game()){ let p; try { p = JSON.parse(m.message); } catch(e){ return; } gameIncoming(p, m); return; }
+  if (m.topic !== T.parent(me)) return;
   if (inbox.some(x => x.id === m.id)) return;
   inbox.unshift(m); inbox.sort((a,b) => b.time - a.time);
   renderInbox();
@@ -858,52 +1374,124 @@ function parentIncoming(m){
 function renderInbox(){
   $('#inboxTitle').textContent = `📬 From ${cfg.kidName || 'your kid'}`;
   if (!inbox.length){ $('#inbox').innerHTML = '<p class="muted">No messages yet. 📭</p>'; return; }
-  const tagE = {rage:'😡', cry:'😢', rotating_light:'🚨', zany_face:'🤪', question:'❓'};
+  const tagE = {rage:'😡', cry:'😢', rotating_light:'🚨', zany_face:'🤪', question:'❓', microphone:'🎤'};
   $('#inbox').innerHTML = inbox.slice(0,40).map(m => {
     const moodE = (m.tags || []).map(t => tagE[t] || '').join('');
     const time = new Date(m.time*1000).toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    const att = m.attachment;
+    let media = '';
+    if (att && att.url){
+      media = /^image\//.test(att.type||'') ? `<img src="${esc(att.url)}" style="max-width:100%;border-radius:12px;margin-top:6px" alt="">`
+                                            : `<audio controls preload="metadata" src="${esc(att.url)}"></audio>`;
+    }
+    const msg = att ? '🎤 Voice message' : esc(m.message || '');
     const quick = ['yes','no','ok','love','wait','call'];
     return `<div class="inbox-item ${m.priority===5?'urgent':''}">
       <div class="ie">${esc(moodE || '💬')}</div>
-      <div style="flex:1">
+      <div style="flex:1;min-width:0">
         <div class="it">${esc(m.title || '')}</div>
-        <div class="im">${esc(m.message || '')}</div>
+        <div class="im">${msg}</div>${media}
         <div class="tm">${time}</div>
         <div class="qr-row">${quick.map(k => `<button data-reply="${k}">${REPLIES[k].e} ${esc(REPLIES[k].t)}</button>`).join('')}</div>
       </div></div>`;
   }).join('');
 }
-$('#inbox').addEventListener('click', e => { const b = e.target.closest('[data-reply]'); if (b) sendReply({k:'reply', id:b.dataset.reply}, REPLIES[b.dataset.reply]); });
+$('#inbox').addEventListener('click', e => { const b = e.target.closest('[data-reply]'); if (b) sendReply({k:'reply', id:b.dataset.reply, from:me}, REPLIES[b.dataset.reply]); });
 
-/* ---- replies ---- */
+/* ---- replies (quick + custom with picture/voice) ---- */
+let att = null;     // {kind:'img'|'voice', blob, url, ext}
 function renderReplies(){
   $('#rgrid').innerHTML = Object.entries(REPLIES).map(([k,r]) =>
     `<button class="rbtn" data-r="${k}" style="background:${r.c}"><span class="e">${r.e}</span>${esc(r.t)}<span class="fx">${ANIMS[r.a].split(' ')[0]} ${SOUNDS[r.s].split(' ')[0]}</span></button>`).join('');
-  $('#cAnim').innerHTML = Object.entries(ANIMS).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
-  $('#cSound').innerHTML = Object.entries(SOUNDS).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
-  $('#cAnim').value = 'confetti'; $('#cSound').value = 'fanfare';
-  $('#cEmojiPick').innerHTML = PICK_EMOJI.map(e => `<button data-e="${e}">${e}</button>`).join('');
+  if (!$('#cAnim').options.length){
+    $('#cAnim').innerHTML = Object.entries(ANIMS).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+    $('#cSound').innerHTML = Object.entries(SOUNDS).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+    $('#cAnim').value = 'confetti'; $('#cSound').value = 'fanfare';
+    $('#cEmojiPick').innerHTML = PICK_EMOJI.map(e => `<button data-e="${e}">${e}</button>`).join('');
+  }
+  $$('.readnote').forEach(n => n.classList.toggle('hidden', !cfg.voice.autoRead));
+  $('#cRec').classList.toggle('hidden', !canRecord);
+  $('#goVoice').classList.toggle('hidden', !canRecord);
 }
-$('#rgrid').addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (b) sendReply({k:'reply', id:b.dataset.r}, REPLIES[b.dataset.r]); });
+$('#rgrid').addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (b) sendReply({k:'reply', id:b.dataset.r, from:me}, REPLIES[b.dataset.r]); });
 $('#cEmojiPick').addEventListener('click', e => { const b = e.target.closest('[data-e]'); if (b) $('#cEmoji').value = b.dataset.e; });
 $('#cSound').addEventListener('change', () => playSound($('#cSound').value));
-function customReply(){ return {k:'reply', e:$('#cEmoji').value.trim() || '💬', t:$('#cText').value.trim(), a:$('#cAnim').value, s:$('#cSound').value}; }
-$('#cPreview').onclick = () => { const r = customReply(); showReveal(r, `👀 Preview — what ${cfg.kidName || 'your kid'} will see`); };
-$('#cSend').onclick = async () => {
-  const r = customReply();
-  if (!r.t){ toast('✏️ Type a message first'); $('#cText').focus(); return; }
-  if (await sendReply(r, r)) $('#cText').value = '';
-};
-async function sendReply(payload, shown){
+
+function setAtt(a){
+  if (att && att.url) URL.revokeObjectURL(att.url);
+  att = a;
+  const box = $('#cAtt');
+  if (!att){ box.classList.add('hidden'); box.innerHTML = ''; return; }
+  box.classList.remove('hidden');
+  box.innerHTML = (att.kind === 'img' ? `<img src="${att.url}" alt="">` : `<audio controls src="${att.url}"></audio>`) +
+    `<button class="btn ghost" id="cAttX" style="margin-left:auto" aria-label="Remove">✕</button>`;
+  $('#cAttX').onclick = () => setAtt(null);
+}
+$('#cPicBtn').onclick = () => $('#cPic').click();
+$('#goPic').onclick = () => { $('#composer').scrollIntoView({behavior:'smooth'}); $('#cPic').click(); };
+$('#goVoice').onclick = () => { $('#composer').scrollIntoView({behavior:'smooth'}); if (!Rec.active()) $('#cRec').click(); };
+$('#cPic').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = '';
+  if (!f) return;
   try {
-    await publish({ topic: T.reply(), message: JSON.stringify(payload) });
-    toast(`🚀 Sent: ${shown.e} ${shown.t}`);
+    const blob = await shrinkImage(f);
+    setAtt({kind:'img', blob, url:URL.createObjectURL(blob), ext:'jpg'});
+    if ($('#cEmoji').value === '🦖') $('#cEmoji').value = '📷';
+    toast('📷 Picture added – write a message if you like, then Send');
+  } catch(err){ toast('😬 Could not read that picture'); }
+});
+let pRecTimer = null;
+async function stopParentRec(){
+  clearTimeout(pRecTimer);
+  const btn = $('#cRec');
+  const r = await Rec.stop();
+  btn.classList.remove('rec'); btn.textContent = '🎤 Record voice';
+  if (r && r.blob.size > 500) setAtt({kind:'voice', blob:r.blob, url:URL.createObjectURL(r.blob), ext:r.ext});
+}
+$('#cRec').onclick = async () => {
+  const btn = $('#cRec');
+  if (Rec.active()){ await stopParentRec(); return; }
+  try { await Rec.start(); } catch(e){ toast('🎤 Microphone not allowed – check your browser settings', 3500); return; }
+  setAtt(null);
+  btn.classList.add('rec');
+  const tick = () => {
+    const s = Math.floor((Date.now() - Rec.started)/1000);
+    btn.textContent = `⏹️ Stop ${fmtTime(s)}`;
+    if (s >= 60){ stopParentRec(); return; }
+    pRecTimer = setTimeout(tick, 250);
+  };
+  tick();
+};
+function customReply(){
+  return {k:'reply', from:me, e:$('#cEmoji').value.trim() || '💬', t:$('#cText').value.trim(), a:$('#cAnim').value, s:$('#cSound').value,
+          kind: att ? att.kind : undefined};
+}
+$('#cPreview').onclick = async () => {
+  if (Rec.active()) await stopParentRec();
+  const r = customReply();
+  if (att){ if (att.kind === 'img') r.img = att.url; else r.voice = att.url; }
+  showReveal(r, `👀 Preview – what ${cfg.kidName || 'your kid'} will see`, myParent().name || '');
+};
+$('#cSend').onclick = async () => {
+  if (Rec.active()) await stopParentRec();
+  const r = customReply();
+  if (!r.t && !att){ toast('✏️ Write a message, or add a picture or voice'); $('#cText').focus(); return; }
+  const btn = $('#cSend'); btn.disabled = true; btn.textContent = '📤 Sending…';
+  const ok = await sendReply(r, {e:r.e, t:r.t || (att ? (att.kind === 'img' ? 'picture' : 'voice message') : '')}, att);
+  btn.disabled = false; btn.textContent = '🚀 Send to iPad';
+  if (ok){ $('#cText').value = ''; setAtt(null); }
+};
+async function sendReply(payload, shown, attachment){
+  try {
+    if (attachment) await publishFile(T.reply(), attachment.blob, `${attachment.kind}-${Date.now()}.${attachment.ext}`, { message: JSON.stringify(payload) });
+    else await publish({ topic: T.reply(), message: JSON.stringify(payload) });
+    toast(`🚀 Sent: ${shown.e || ''} ${shown.t || ''}`);
     playSound('send');
     return true;
-  } catch(e){ toast('😬 Could not send — check your connection'); return false; }
+  } catch(e){ toast('😬 Could not send – check your connection'); return false; }
 }
 
-/* ---- button editor ---- */
+/* ---- button editor + voice settings ---- */
 function renderEditor(){
   $('#editList').innerHTML = draft.buttons.map((b,i) => `
     <div class="edit-item" style="background:${esc(b.c)}" data-i="${i}">
@@ -918,7 +1506,40 @@ function renderEditor(){
     </div>`).join('');
   $('#moodChips').innerHTML = MOOD_ORDER.map(k => `<button class="chip ${draft.moods.includes(k)?'on':''}" data-m="${k}">${MOODS[k].e} ${MOODS[k].n}</button>`).join('');
   $('#cooldown').value = draft.cooldown; $('#cdVal').textContent = draft.cooldown ? draft.cooldown + ' sec' : 'none';
+  $('#vAuto').checked = !!draft.voice.autoRead;
+  $('#vHelp').checked = !!draft.voice.help;
+  $('#vKidMic').checked = !!draft.voice.kidMic;
+  $('#vGames').checked = !!draft.games;
+  $('#vLang').value = draft.voice.lang;
+  $('#vRate').value = draft.voice.rate; $('#vRateVal').textContent = rateLabel(draft.voice.rate);
+  fillVoiceSelect();
 }
+const rateLabel = r => r < 0.8 ? '🐢 slow' : r > 1.1 ? '🐇 fast' : '🙂 normal';
+function fillVoiceSelect(){
+  const sel = $('#vVoice'); if (!sel) return;
+  const lang = (draft || cfg).voice.lang;
+  const list = langVoices(lang);
+  const chosen = LS.get('voiceName', '');
+  sel.innerHTML = `<option value="">✨ Automatic (best ${esc(LANGS[lang] || lang)} voice)</option>` +
+    list.map(v => `<option value="${esc(v.name)}" ${v.name===chosen?'selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`).join('') +
+    (list.length || !voices.length ? '' : `<option disabled>No ${esc(LANGS[lang] || lang)} voice on this device</option>`);
+}
+$('#vAuto').onchange = e => draft.voice.autoRead = e.target.checked;
+$('#vHelp').onchange = e => draft.voice.help = e.target.checked;
+$('#vKidMic').onchange = e => draft.voice.kidMic = e.target.checked;
+$('#vGames').onchange = e => draft.games = e.target.checked;
+$('#vLang').onchange = e => { draft.voice.lang = e.target.value; LS.set('voiceName', ''); fillVoiceSelect(); };
+$('#vRate').oninput = e => { draft.voice.rate = +e.target.value; $('#vRateVal').textContent = rateLabel(draft.voice.rate); };
+$('#vVoice').onchange = e => LS.set('voiceName', e.target.value);
+$('#vTest').onclick = () => {
+  const keep = cfg.voice; cfg.voice = Object.assign({}, draft.voice);
+  const sample = {'nb-NO':'Hei! Sånn høres jeg ut.','sv-SE':'Hej! Så här låter jag.','da-DK':'Hej! Sådan lyder jeg.','de-DE':'Hallo! So klinge ich.',
+    'fi-FI':'Hei! Tältä minä kuulostan.','nl-NL':'Hallo! Zo klink ik.','fr-FR':'Salut ! Voici ma voix.','es-ES':'¡Hola! Así sueno yo.',
+    'it-IT':'Ciao! Ecco la mia voce.','pt-BR':'Oi! Essa é a minha voz.','pl-PL':'Cześć! Tak brzmi mój głos.'}[draft.voice.lang] || 'Hi! This is how I sound.';
+  say((draft.kidName ? draft.kidName + '. ' : '') + sample);
+  cfg.voice = keep;
+};
+
 $('#editList').addEventListener('input', e => {
   const row = e.target.closest('.edit-item'); const f = e.target.dataset.f;
   if (row && f) draft.buttons[+row.dataset.i][f] = e.target.value;
@@ -941,85 +1562,890 @@ $('#addBtn').onclick = () => {
   const last = $('#editList').lastElementChild; last.scrollIntoView({behavior:'smooth', block:'center'}); last.querySelector('[data-f="t"]').select();
 };
 $('#moodChips').addEventListener('click', e => {
-  const m = e.target.closest('[data-m]')?.dataset.m; if (!m) return;
+  const c = e.target.closest('[data-m]'); if (!c) return;
+  const m = c.dataset.m;
   draft.moods = draft.moods.includes(m) ? draft.moods.filter(x => x !== m) : [...draft.moods, m];
   renderEditor();
 });
 $('#cooldown').addEventListener('input', e => { draft.cooldown = +e.target.value; $('#cdVal').textContent = draft.cooldown ? draft.cooldown + ' sec' : 'none'; });
 $('#saveCfg').onclick = () => commitDraft();
 
-async function commitDraft(){
+async function commitDraft({stay=false} = {}){
   draft.buttons = draft.buttons.map(b => ({e:(b.e||'⭐').trim(), t:(b.t||'').trim() || 'Button', c:b.c}));
+  draft.parents = draft.parents.map(p => {
+    // a profile's password can only be changed from that profile – keep the newest one for everybody else
+    const live = cfg.parents.find(x => x.id === p.id);
+    const lock = p.id === me ? p.lock : (live ? live.lock : p.lock);
+    return Object.assign({id:p.id, e:(p.e||'🙂').trim(), name:(p.name||'').trim()}, lock ? {lock} : {});
+  });
+  draft.parentName = draft.parents[0].name;
   draft.updated = Date.now();
-  cfg = clone(draft); saveCfg();
+  cfg = normalize(clone(draft)); saveCfg();
+  renderWho(); renderReplies();
   const ok = await pushConfig();
-  if (editingOnKid){ toast('💾 Saved!'); startKid(); }
-  else toast(ok ? '✨ Saved! The iPad will update in a moment.' : '💾 Saved here, but could not reach the iPad right now.', 3000);
+  if (editingOnKid && !stay){ toast('💾 Saved!'); startKid(); return ok; }
+  if (!stay) toast(ok ? '✨ Saved! The iPad will update in a moment.' : '💾 Saved here, but could not reach the iPad right now.', 3000);
+  return ok;
 }
 async function pushConfig(){
   try { await publish({ topic: T.config(), message: JSON.stringify({k:'config', cfg}) }); LS.set('cfgPushed', Date.now()); return true; }
   catch(e){ return false; }
 }
 
-/* ---- setup ---- */
+/* ---- setup: parents, names, links ---- */
 function renderSetup(){
-  $('#kidTopic').textContent = T.kid();
+  $('#myTopic').textContent = T.parent(me);
   $('#kidLink').textContent = appUrl('kid');
-  $('#parentLink').textContent = appUrl('parent');
+  $('#parentLink').textContent = appUrl('parent', me);
   $('#famCode').textContent = family;
-  $('#sKid').value = cfg.kidName; $('#sParent').value = cfg.parentName; $('#sPin').value = cfg.pin;
-  $('#setupSteps').classList.toggle('hidden', editingOnKid);
-  $('#testNotif').classList.toggle('hidden', editingOnKid);
+  $('#sKid').value = draft.kidName; $('#sPin').value = draft.pin;
+  renderParentList();
+}
+function renderParentList(){
+  $('#parentList').innerHTML = draft.parents.map((p,i) => `
+    <div class="parent-row" data-i="${i}">
+      <input class="inp emo" data-pf="e" value="${esc(p.e)}" maxlength="8" aria-label="Emoji">
+      <input class="inp" data-pf="name" value="${esc(p.name)}" maxlength="20" placeholder="Name, e.g. Mom">
+      ${p.id===me ? `<button class="btn ghost" data-pact="lock" title="Password" aria-label="Password">${p.lock?'🔒':'🔓'}</button>` : '<span></span>'}
+      <button class="btn ghost" data-pact="invite" title="Invite" aria-label="Invite">🔗</button>
+      <button class="btn ghost" data-pact="del" title="Remove" aria-label="Remove" ${p.id===me?'disabled style="opacity:.3"':''}>✕</button>
+      <div class="me-badge">${p.id===me ? '⭐ You' + (p.lock ? ' · 🔒 password on' : ' · tap 🔓 to add a password') : (p.lock ? '🔒 Has a password' : 'Tap 🔗 to connect their phone')}</div>
+    </div>`).join('');
+}
+$('#parentList').addEventListener('input', e => {
+  const row = e.target.closest('.parent-row'); const f = e.target.dataset.pf;
+  if (row && f) draft.parents[+row.dataset.i][f] = e.target.value;
+});
+$('#parentList').addEventListener('click', async e => {
+  const row = e.target.closest('.parent-row'); const b = e.target.closest('[data-pact]');
+  if (!row || !b) return;
+  const p = draft.parents[+row.dataset.i];
+  if (b.dataset.pact === 'lock'){ openPw(+row.dataset.i); return; }
+  if (b.dataset.pact === 'del'){
+    if (p.id === me) return;
+    if (p.lock){ toast(`🔒 ${p.name}'s profile has a password – ${p.name} must remove it first`, 4000); return; }
+    if (!await confirmBox(`Remove ${p.name || 'this parent'}?`, 'They will stop getting messages from the iPad.')) return;
+    draft.parents.splice(+row.dataset.i, 1);
+    await commitDraft({stay:true}); renderParentList(); toast('👋 Removed');
+  }
+  if (b.dataset.pact === 'invite'){
+    if (!p.name.trim()){ toast('✏️ Write their name first'); row.querySelector('[data-pf=name]').focus(); return; }
+    await commitDraft({stay:true});
+    openInvite(p);
+  }
+});
+$('#addParent').onclick = () => {
+  if (draft.parents.length >= 6) return toast('6 parents is the max 🙂');
+  const used = draft.parents.map(p => p.e);
+  draft.parents.push({id:'p' + rnd(5), name:'', e: PARENT_EMOJI.find(e => !used.includes(e)) || '🙂'});
+  renderParentList();
+  $('#parentList').lastElementChild.querySelector('[data-pf=name]').focus();
+  toast('✏️ Write their name, then tap 🔗 to invite them', 3500);
+};
+$('#saveParents').onclick = async () => { const ok = await commitDraft({stay:true}); renderParentList(); toast(ok ? '✨ Saved!' : '💾 Saved here, but could not reach the iPad right now.'); };
+function openInvite(p){
+  $('#invTitle').textContent = `🔗 Invite ${p.e} ${p.name}`;
+  $$('.invName').forEach(n => n.textContent = p.name);
+  $('#invTopic').textContent = T.parent(p.id);
+  const link = appUrl('parent', p.id);
+  $('#invLink').textContent = link;
+  drawQRInto($('#invQr'), link);
+  $('#inviteOv').classList.remove('hidden');
+}
+$('#invClose').onclick = () => $('#inviteOv').classList.add('hidden');
+
+function drawQRInto(box, text){
+  box.innerHTML = '';
+  if (window.QRCode) new QRCode(box, {text, width:400, height:400, correctLevel: QRCode.CorrectLevel.M});
+  else box.innerHTML = '<p class="muted small" style="width:200px">QR code could not load – use the link below instead.</p>';
 }
 let qrDone = false;
 function drawQR(){
   if (qrDone || editingOnKid) return;
-  const box = $('#qrbox');
-  if (window.QRCode){ box.innerHTML = ''; new QRCode(box, {text: appUrl('kid'), width:400, height:400, correctLevel: QRCode.CorrectLevel.M}); qrDone = true; }
-  else { box.innerHTML = '<p class="muted small" style="width:200px">QR code could not load — use the link below instead.</p>'; setTimeout(drawQR, 1500); }
+  if (window.QRCode){ drawQRInto($('#qrbox'), appUrl('kid')); qrDone = true; }
+  else { $('#qrbox').innerHTML = '<p class="muted small" style="width:200px">Loading QR code…</p>'; setTimeout(drawQR, 1500); }
 }
 $('#saveNames').onclick = () => {
   const pin = $('#sPin').value.trim();
   if (!/^\d{4}$/.test(pin)) return toast('PIN must be 4 digits');
-  draft.kidName = $('#sKid').value.trim(); draft.parentName = $('#sParent').value.trim(); draft.pin = pin;
+  draft.kidName = $('#sKid').value.trim(); draft.pin = pin;
   commitDraft();
 };
-$$('[data-copy]').forEach(b => b.onclick = async () => {
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
   const txt = $('#' + b.dataset.copy).textContent;
   try { await navigator.clipboard.writeText(txt); toast('📋 Copied!'); }
-  catch(e){ toast('Press and hold the text to copy it'); }
+  catch(err){ toast('Press and hold the text to copy it'); }
 });
 $('#testNotif').onclick = async () => {
   try {
-    await publish({topic:T.kid(), title:`${cfg.kidName || 'Your kid'}: 🧪`, message:'This is a test! If you see this, BuzzPal works 🎉', tags:['tada'], click:appUrl('parent')});
+    await publish({topic:T.parent(me), title:`${cfg.kidName || 'Your kid'}: 🧪`, message:'This is a test! If you see this, BuzzPal works 🎉', tags:['tada'], click:appUrl('parent', me)});
     toast('🔔 Sent! Check your notifications.');
   } catch(e){ toast('😬 Could not reach ntfy.sh'); }
 };
 $('#resetAll').onclick = async () => {
-  if (!await confirmBox('Reset this device?', 'This forgets the family code and all buttons on THIS device only.')) return;
+  if (!await confirmBox('Reset this device?', 'This forgets the family code and all settings on THIS device only.')) return;
   LS.clear(); location.href = location.pathname;
 };
 
 function connectParent(){
-  subscribe([T.kid()], '12h', parentIncoming, st =>
+  subscribe([T.parent(me), T.config(), T.game()], '12h', parentIncoming, st =>
     setStatus($('#pStatus'), st, {on:'live', wait:'connecting…', off:'offline'}));
 }
 function startParent(){
+  if (!isUnlocked(me)) return showLock();
   openParent(false);
   connectParent();
   renderInbox();
-  // keep the iPad's copy fresh (ntfy keeps messages ~12h)
   if (cfg.updated && Date.now() - LS.get('cfgPushed', 0) > 6*3600*1000) pushConfig();
 }
 
 /* =========================================================
+   PROFILE PASSWORDS
+   The password itself is never stored – only a SHA-256 fingerprint.
+   ========================================================= */
+async function hashPw(pid, pw){
+  const data = new TextEncoder().encode(`buzzpal:${family}:${pid}:${pw}`);
+  const h = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+const exactParent = id => cfg.parents.find(p => p.id === id) || null;
+function isUnlocked(pid){
+  const p = exactParent(pid);
+  if (!p || !p.lock) return true;
+  try { if (sessionStorage.getItem('buzzpal_unlock_' + pid) === p.lock) return true; } catch(e){}
+  return LS.get('remember_' + pid, '') === p.lock;
+}
+function markUnlocked(pid, lock, remember){
+  try { sessionStorage.setItem('buzzpal_unlock_' + pid, lock); } catch(e){}
+  if (remember) LS.set('remember_' + pid, lock);
+}
+function forgetUnlock(pid){
+  try { sessionStorage.removeItem('buzzpal_unlock_' + pid); } catch(e){}
+  LS.set('remember_' + pid, '');
+}
+function showLock(){
+  if (es){ es.close(); es = null; }
+  $$('.ov').forEach(o => o.classList.add('hidden'));
+  const p = exactParent(me) || myParent();
+  $('#lkE').textContent = p.e || '🙂';
+  $('#lkName').textContent = p.name || 'Parent';
+  $('#lkPw').value = ''; $('#lkRemember').checked = false;
+  show('plock');
+  setTimeout(() => $('#lkPw').focus(), 150);
+}
+$('#lkForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const p = exactParent(me);
+  if (!p || !p.lock){ startParent(); return; }
+  if ((await hashPw(p.id, $('#lkPw').value)) === p.lock){
+    markUnlocked(p.id, p.lock, $('#lkRemember').checked);
+    $('#lkPw').value = '';
+    startParent();
+  } else {
+    playSound('error'); const f = $('#lkForm'); f.classList.add('shake'); setTimeout(() => f.classList.remove('shake'), 450);
+    toast('🔒 Wrong password'); $('#lkPw').select();
+  }
+});
+$('#lkSwitch').onclick = () => openProfiles();
+function openProfiles(){
+  $('#profList').innerHTML = cfg.parents.map(p =>
+    `<button class="profbtn" data-prof="${esc(p.id)}"><span>${esc(p.e || '🙂')}</span>${esc(p.name || '?')} ${p.lock ? '🔒' : ''} ${p.id === me ? '⭐' : ''}</button>`).join('');
+  const mine = exactParent(me);
+  $('#lockNow').classList.toggle('hidden', !(mine && mine.lock) || !$('#plock').classList.contains('hidden'));
+  $('#profOv').classList.remove('hidden');
+}
+$('#profX').onclick = () => $('#profOv').classList.add('hidden');
+$('#profList').addEventListener('click', e => {
+  const b = e.target.closest('[data-prof]'); if (!b) return;
+  $('#profOv').classList.add('hidden');
+  const id = b.dataset.prof;
+  if (id === me){ if (!isUnlocked(me)) showLock(); return; }
+  forgetUnlockSession(me);
+  me = id; LS.set('me', me); syncUrl();
+  inbox.length = 0; curSid = null; qrDone = false;
+  if (es){ es.close(); es = null; }
+  startParent();
+});
+function forgetUnlockSession(pid){ try { sessionStorage.removeItem('buzzpal_unlock_' + pid); } catch(e){} }
+$('#lockNow').onclick = () => { forgetUnlock(me); $('#profOv').classList.add('hidden'); showLock(); };
+
+let pwTarget = -1;
+function openPw(i){
+  pwTarget = i;
+  const p = draft.parents[i];
+  $('#pwTitle').textContent = `🔒 Password for ${p.e || ''} ${p.name || ''}`;
+  $('#pwOldWrap').classList.toggle('hidden', !p.lock);
+  $('#pwRemove').classList.toggle('hidden', !p.lock);
+  ['#pwOld','#pwNew','#pwNew2'].forEach(x => $(x).value = '');
+  $('#pwOv').classList.remove('hidden');
+}
+async function pwOldOk(p){
+  if (!p.lock) return true;
+  if ((await hashPw(p.id, $('#pwOld').value)) === p.lock) return true;
+  playSound('error'); toast('🔒 The current password is wrong'); return false;
+}
+$('#pwCancel').onclick = () => $('#pwOv').classList.add('hidden');
+$('#pwForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const p = draft.parents[pwTarget]; if (!p || p.id !== me) return;
+  if (!await pwOldOk(p)) return;
+  const a = $('#pwNew').value, b = $('#pwNew2').value;
+  if (a.length < 4) return toast('Use at least 4 characters');
+  if (a !== b) return toast("The two passwords don't match");
+  p.lock = await hashPw(p.id, a);
+  markUnlocked(p.id, p.lock, false);
+  await commitDraft({stay:true});
+  $('#pwOv').classList.add('hidden'); renderParentList();
+  toast('🔒 Password saved! It is needed every time this profile is opened.', 3500);
+});
+$('#pwRemove').onclick = async () => {
+  const p = draft.parents[pwTarget]; if (!p || p.id !== me) return;
+  if (!await pwOldOk(p)) return;
+  delete p.lock;
+  await commitDraft({stay:true});
+  $('#pwOv').classList.add('hidden'); renderParentList();
+  toast('🔓 Password removed');
+};
+
+/* =========================================================
+   GAMES – both sides keep the same list of moves and work out the board from it
+   Events on <code>-game: {t:'start', sid, g, p, first, seed} and {t:'move', sid, by, eid, ...}
+   ========================================================= */
+const GAMES = {
+  ttt: {e:'❌⭕', n:'Tic-tac-toe',   say:'Tic tac toe'},
+  c4:  {e:'🔴🟡', n:'Four in a row', say:'Four in a row'},
+  mem: {e:'🃏',   n:'Memory',        say:'Memory'},
+  rps: {e:'✊✋✌️', n:'Rock paper scissors', say:'Rock, paper, scissors'},
+  spin:{e:'🌀',   n:'Spin Four',     say:'Spin four'},
+  chess:{e:'♟️',  n:'Chess',         say:'Chess'},
+  snl: {e:'🐍🪜', n:'Snakes & Ladders', say:'Snakes and ladders'},
+  pong:{e:'🏓',   n:'Paddle Ball',   say:'Paddle ball'},
+};
+const SNL = {16:6, 47:26, 49:11, 56:53, 62:19, 64:60, 87:24, 93:73, 95:75, 98:78,
+             1:38, 4:14, 9:31, 21:42, 28:84, 36:44, 51:67, 71:91, 80:100};
+const DIE = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+const GLYPH = {k:'♚\uFE0E', q:'♛\uFE0E', r:'♜\uFE0E', b:'♝\uFE0E', n:'♞\uFE0E', p:'♟\uFE0E'};
+const PW = {kid:0.17, parent:0.12};   // paddle half-widths (the kid gets a bigger paddle)
+/* Spin Four: 4x4, outer ring and inner ring both turn one step counter-clockwise after every move */
+const RING_OUT = [0,1,2,3,7,11,15,14,13,12,8,4], RING_IN = [5,6,10,9];
+function spinBoard(c){
+  const n = c.slice();
+  for (const ring of [RING_OUT, RING_IN]) ring.forEach((idx, k) => { n[ring[(k - 1 + ring.length) % ring.length]] = c[idx]; });
+  return n;
+}
+const LINES4 = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[0,4,8,12],[1,5,9,13],[2,6,10,14],[3,7,11,15],[0,5,10,15],[3,6,9,12]];
+function spinWinner(c){
+  const found = {};
+  for (const L of LINES4){ const w = c[L[0]]; if (w && L.every(i => c[i] === w)) found[w] = found[w] || L; }
+  if (found.kid && found.parent) return {who:'draw', line:[...found.kid, ...found.parent]};
+  if (found.kid) return {who:'kid', line:found.kid};
+  if (found.parent) return {who:'parent', line:found.parent};
+  return null;
+}
+/* Small chess engine: board index 0 = a8 … 63 = h1. Uppercase = white. Pawns always become queens. */
+const CH = (() => {
+  const START = 'rnbqkbnrpppppppp' + '.'.repeat(32) + 'PPPPPPPPRNBQKBNR';
+  const colorOf = p => p === '.' ? null : (p === p.toUpperCase() ? 'w' : 'b');
+  const NM = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+  const KM = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  const BD = [[-1,-1],[-1,1],[1,-1],[1,1]], RD = [[-1,0],[1,0],[0,-1],[0,1]];
+  const on = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
+  const init = () => ({b: START.split(''), turn:'w', castle:{K:1,Q:1,k:1,q:1}, ep:-1});
+  function attacked(b, sq, by){
+    const r = sq >> 3, c = sq & 7, w = by === 'w';
+    const pr = r + (w ? 1 : -1);
+    for (const dc of [-1,1]) if (on(pr, c+dc) && b[pr*8 + c+dc] === (w ? 'P' : 'p')) return true;
+    for (const [dr,dc] of NM) if (on(r+dr, c+dc) && b[(r+dr)*8 + c+dc] === (w ? 'N' : 'n')) return true;
+    for (const [dr,dc] of KM) if (on(r+dr, c+dc) && b[(r+dr)*8 + c+dc] === (w ? 'K' : 'k')) return true;
+    const slide = (dirs, kinds) => {
+      for (const [dr,dc] of dirs){
+        let rr = r+dr, cc = c+dc;
+        while (on(rr, cc)){
+          const q = b[rr*8+cc];
+          if (q !== '.'){ if (colorOf(q) === by && kinds.includes(q.toLowerCase())) return true; break; }
+          rr += dr; cc += dc;
+        }
+      }
+      return false;
+    };
+    return slide(BD, 'bq') || slide(RD, 'rq');
+  }
+  const kingSq = (b, col) => b.indexOf(col === 'w' ? 'K' : 'k');
+  function pseudo(s){
+    const out = [], b = s.b, me = s.turn, them = me === 'w' ? 'b' : 'w';
+    for (let i = 0; i < 64; i++){
+      const p = b[i]; if (colorOf(p) !== me) continue;
+      const r = i >> 3, c = i & 7, t = p.toLowerCase(), add = to => out.push({from:i, to});
+      if (t === 'p'){
+        const d = me === 'w' ? -1 : 1, start = me === 'w' ? 6 : 1;
+        if (on(r+d, c) && b[(r+d)*8+c] === '.'){ add((r+d)*8+c); if (r === start && b[(r+2*d)*8+c] === '.') add((r+2*d)*8+c); }
+        for (const dc of [-1,1]){ if (!on(r+d, c+dc)) continue; const to = (r+d)*8+c+dc; if (colorOf(b[to]) === them || to === s.ep) add(to); }
+      } else if (t === 'n' || t === 'k'){
+        for (const [dr,dc] of (t === 'n' ? NM : KM)){ if (!on(r+dr, c+dc)) continue; const to = (r+dr)*8+c+dc; if (colorOf(b[to]) !== me) add(to); }
+        if (t === 'k'){
+          const home = me === 'w' ? 60 : 4, R = me === 'w' ? 'R' : 'r';
+          if (i === home && !attacked(b, home, them)){
+            if (s.castle[me === 'w' ? 'K' : 'k'] && b[home+1] === '.' && b[home+2] === '.' && b[home+3] === R && !attacked(b, home+1, them) && !attacked(b, home+2, them)) add(home+2);
+            if (s.castle[me === 'w' ? 'Q' : 'q'] && b[home-1] === '.' && b[home-2] === '.' && b[home-3] === '.' && b[home-4] === R && !attacked(b, home-1, them) && !attacked(b, home-2, them)) add(home-2);
+          }
+        }
+      } else {
+        const dirs = t === 'b' ? BD : t === 'r' ? RD : [...BD, ...RD];
+        for (const [dr,dc] of dirs){
+          let rr = r+dr, cc = c+dc;
+          while (on(rr, cc)){ const to = rr*8+cc; if (b[to] === '.') add(to); else { if (colorOf(b[to]) === them) add(to); break; } rr += dr; cc += dc; }
+        }
+      }
+    }
+    return out;
+  }
+  function apply(s, m){
+    const b = s.b.slice(), p = b[m.from], t = p.toLowerCase(), me = s.turn, castle = Object.assign({}, s.castle);
+    let ep = -1;
+    if (t === 'p' && m.to === s.ep && b[m.to] === '.') b[m.to + (me === 'w' ? 8 : -8)] = '.';
+    if (t === 'p' && Math.abs(m.to - m.from) === 16) ep = (m.from + m.to) / 2;
+    b[m.to] = p; b[m.from] = '.';
+    if (t === 'p' && (m.to < 8 || m.to >= 56)) b[m.to] = me === 'w' ? 'Q' : 'q';
+    if (t === 'k'){
+      if (m.to - m.from === 2){ b[m.from+1] = b[m.from+3]; b[m.from+3] = '.'; }
+      if (m.from - m.to === 2){ b[m.from-1] = b[m.from-4]; b[m.from-4] = '.'; }
+      if (me === 'w') castle.K = castle.Q = 0; else castle.k = castle.q = 0;
+    }
+    for (const [sq, k] of [[63,'K'],[56,'Q'],[7,'k'],[0,'q']]) if (m.from === sq || m.to === sq) castle[k] = 0;
+    return {b, turn: me === 'w' ? 'b' : 'w', castle, ep};
+  }
+  const legal = s => pseudo(s).filter(m => { const n = apply(s, m); return !attacked(n.b, kingSq(n.b, s.turn), n.turn); });
+  const inCheck = s => attacked(s.b, kingSq(s.b, s.turn), s.turn === 'w' ? 'b' : 'w');
+  return {init, legal, apply, inCheck};
+})();
+const MEM_POOL = ['🐶','🐱','🦊','🐸','🦄','🐙','🍕','🍦','🚀','⚽','🌈','🦖','🐼','🍓'];
+const RPS = {rock:'✊', paper:'✋', scissors:'✌️'};
+let games = LS.get('games', {});
+let curSid = null;
+const myRole = () => role === 'kid' ? 'kid' : 'parent';
+const otherSide = w => w === 'kid' ? 'parent' : 'kid';
+const mineSession = s => !!s && (role === 'kid' || s.p === me);
+function saveGames(){
+  Object.keys(games).sort((a,b) => games[b].time - games[a].time).slice(12).forEach(id => delete games[id]);
+  LS.set('games', games);
+}
+function latestGame(){ return Object.values(games).filter(mineSession).sort((a,b) => b.time - a.time)[0] || null; }
+function gName(s, who){ return who === 'kid' ? (cfg.kidName || 'Kid') : pName(s.p); }
+function gFace(s, who){ return who === 'kid' ? '🧒' : ((exactParent(s.p) || {}).e || '🙂'); }
+function gPiece(s, who){
+  if (s.g === 'spin') return who === 'kid' ? '🟡' : '🔵';
+  if (s.g === 'chess'){ const kidWhite = s.first !== 'parent'; return (who === 'kid') === kidWhite ? '⚪' : '⚫'; }
+  if (s.g === 'c4') return who === 'kid' ? '🟡' : '🔴';
+  return who === 'kid' ? '⭐' : gFace(s, 'parent');
+}
+function rng(seed){
+  let a = seed >>> 0;
+  return () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+function shuffle(arr, R){ for (let i = arr.length - 1; i > 0; i--){ const j = Math.floor(R() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+function winLine(cells, W, H, need, i){
+  const who = cells[i], r0 = Math.floor(i / W), c0 = i % W;
+  for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]){
+    const line = [i];
+    for (const d of [1,-1]){
+      let r = r0 + dr*d, c = c0 + dc*d;
+      while (r >= 0 && r < H && c >= 0 && c < W && cells[r*W + c] === who){ line.push(r*W + c); r += dr*d; c += dc*d; }
+    }
+    if (line.length >= need) return line;
+  }
+  return null;
+}
+function rpsWinner(k, p){
+  if (k === p) return 'draw';
+  return (k === 'rock' && p === 'scissors') || (k === 'paper' && p === 'rock') || (k === 'scissors' && p === 'paper') ? 'kid' : 'parent';
+}
+// Work out the whole game from the list of moves. Illegal moves are simply skipped.
+function gstate(s){
+  const st = {turn: s.first || 'kid', winner:null, scores:{kid:0, parent:0}, last:-1, match:null};
+  if (s.g === 'ttt' || s.g === 'c4'){
+    const W = s.g === 'ttt' ? 3 : 7, H = s.g === 'ttt' ? 3 : 6, need = s.g === 'ttt' ? 3 : 4;
+    st.cells = Array(W*H).fill(null);
+    for (const m of s.moves){
+      if (st.winner || m.by !== st.turn) continue;
+      let i = -1;
+      if (s.g === 'ttt'){ if (m.i < 0 || m.i > 8 || st.cells[m.i]) continue; i = m.i; }
+      else { for (let r = H-1; r >= 0; r--) if (!st.cells[r*W + m.c]){ i = r*W + m.c; break; } if (i < 0) continue; }
+      st.cells[i] = m.by; st.last = i;
+      const line = winLine(st.cells, W, H, need, i);
+      if (line){ st.winner = m.by; st.line = line; }
+      else if (st.cells.every(Boolean)) st.winner = 'draw';
+      else st.turn = otherSide(st.turn);
+    }
+  }
+  if (s.g === 'mem'){
+    const R = rng(s.seed);
+    const faces = shuffle(MEM_POOL.slice(), R).slice(0, 6);
+    st.deck = shuffle([...faces, ...faces], R);
+    st.matched = Array(12).fill(null); st.open = [];
+    for (const m of s.moves){
+      if (st.winner || m.by !== st.turn || st.matched[m.i] || st.deck[m.i] === undefined) continue;
+      if (st.open.length === 2) st.open = [];
+      if (st.open.includes(m.i)) continue;
+      st.open.push(m.i); st.last = m.i; st.match = null;
+      if (st.open.length === 2){
+        const [a, b] = st.open;
+        if (st.deck[a] === st.deck[b]){
+          st.matched[a] = st.matched[b] = m.by; st.scores[m.by]++; st.open = []; st.match = true;
+          if (st.matched.every(Boolean)) st.winner = st.scores.kid > st.scores.parent ? 'kid' : st.scores.kid < st.scores.parent ? 'parent' : 'draw';
+        } else { st.turn = otherSide(st.turn); st.match = false; }
+      }
+    }
+  }
+  if (s.g === 'rps'){
+    st.rounds = []; st.cur = {}; st.turn = null;
+    for (const m of s.moves){
+      if (st.winner || m.r !== st.rounds.length || st.cur[m.by] || !RPS[m.pick]) continue;
+      st.cur[m.by] = m.pick;
+      if (st.cur.kid && st.cur.parent){
+        const w = rpsWinner(st.cur.kid, st.cur.parent);
+        st.rounds.push({kid:st.cur.kid, parent:st.cur.parent, w});
+        if (w !== 'draw') st.scores[w]++;
+        st.cur = {};
+        if (st.scores.kid >= 3 || st.scores.parent >= 3) st.winner = st.scores.kid >= 3 ? 'kid' : 'parent';
+      }
+    }
+  }
+  if (s.g === 'spin'){
+    st.cells = Array(16).fill(null); st.left = {kid:8, parent:8}; st.spins = 0;
+    for (const m of s.moves){
+      if (st.winner || m.by !== st.turn || !(m.i >= 0 && m.i < 16) || st.cells[m.i] || !st.left[m.by]) continue;
+      st.cells[m.i] = m.by; st.left[m.by]--;
+      st.cells = spinBoard(st.cells); st.spins++;
+      let w = spinWinner(st.cells);
+      if (!w && st.cells.every(Boolean)){
+        for (let k = 0; k < 5 && !w; k++){ st.cells = spinBoard(st.cells); st.spins++; w = spinWinner(st.cells); }
+        if (!w) w = {who:'draw', line:[]};
+      }
+      if (w){ st.winner = w.who; st.line = w.line; } else st.turn = otherSide(st.turn);
+    }
+  }
+  if (s.g === 'chess'){
+    const col = {kid: s.first === 'parent' ? 'b' : 'w'}; col.parent = col.kid === 'w' ? 'b' : 'w';
+    const roleOf = c => col.kid === c ? 'kid' : 'parent';
+    let cs = CH.init(); st.col = col; st.lastMove = null;
+    for (const m of s.moves){
+      if (st.winner || m.by !== roleOf(cs.turn)) continue;
+      if (!CH.legal(cs).some(x => x.from === m.from && x.to === m.to)) continue;
+      cs = CH.apply(cs, {from:m.from, to:m.to}); st.lastMove = m;
+      if (!CH.legal(cs).length) st.winner = CH.inCheck(cs) ? m.by : 'draw';
+      else if (s.moves.length > 400) st.winner = 'draw';
+    }
+    st.cs = cs; st.turn = roleOf(cs.turn);
+    st.check = !st.winner && CH.inCheck(cs);
+    st.legal = st.winner ? [] : CH.legal(cs);
+  }
+  if (s.g === 'snl'){
+    st.pos = {kid:0, parent:0}; st.lastRoll = null;
+    for (const m of s.moves){
+      if (st.winner || m.by !== st.turn || !(m.roll >= 1 && m.roll <= 6)) continue;
+      const from = st.pos[m.by];
+      let land = from + m.roll; if (land > 100) land = 200 - land;   // bounce back from 100
+      const to = SNL[land] || land;
+      st.pos[m.by] = to; st.lastRoll = {by:m.by, roll:m.roll, from, land, to};
+      if (to === 100) st.winner = m.by; else st.turn = otherSide(st.turn);
+    }
+  }
+  if (s.g === 'pong'){
+    st.ball = null; st.server = s.first || 'kid'; st.turn = null; st.rally = 0;
+    for (const m of s.moves){
+      if (st.winner) continue;
+      if (m.kind === 'serve'){ if (st.ball || m.by !== st.server) continue; st.ball = {by:m.by, x:m.x, vx:m.vx, d:m.d, eid:m.eid}; }
+      else if (m.kind === 'hit'){ if (!st.ball || m.by === st.ball.by) continue; st.ball = {by:m.by, x:m.x, vx:m.vx, d:m.d, eid:m.eid}; st.rally++; }
+      else if (m.kind === 'miss'){
+        if (!st.ball || m.by === st.ball.by) continue;
+        const w = otherSide(m.by); st.scores[w]++; st.ball = null; st.server = m.by;
+        if (st.scores[w] >= 5) st.winner = w;
+      }
+    }
+  }
+  return st;
+}
+const kidTalks = () => role === 'kid' && (cfg.voice.help || cfg.voice.autoRead);
+
+function addSession(ev, time){
+  if (!ev.sid || games[ev.sid]) return false;
+  games[ev.sid] = {sid:ev.sid, g:ev.g, p:ev.p, first:ev.first || 'kid', seed:ev.seed || 1, by:ev.by, time, moves:[], eids:[]};
+  saveGames(); return true;
+}
+async function startGame(g, p, first){
+  if (!GAMES[g] || !p) return;
+  const ev = {k:'game', t:'start', sid:'g' + rnd(10), g, p, first: first || 'kid', seed: Math.floor(Math.random() * 2147483647), by: myRole()};
+  addSession(ev, Math.floor(Date.now()/1000));
+  curSid = ev.sid; openGame();
+  if (kidTalks()) say(GAMES[g].say);
+  try {
+    await publish({topic: T.game(), message: JSON.stringify(ev)});
+    if (role === 'kid') publish({topic: T.parent(p), title: `${cfg.kidName || 'Your kid'}: 🎮`,
+      message: `${cfg.kidName || 'Your kid'} wants to play ${GAMES[g].n}! Tap to play.`, tags:['video_game'], priority:4, click: appUrl('parent', p)}).catch(()=>{});
+  } catch(e){ toast('😬 No connection – could not start the game', 3500); }
+}
+async function gameMove(data){
+  const s = games[curSid]; if (!s) return;
+  const st = gstate(s), mr = myRole();
+  if (st.winner) return;
+  if (s.g === 'pong'){ /* checked by the reducer */ }
+  else if (s.g === 'rps'){ if (st.cur[mr]) return; data.r = st.rounds.length; }
+  else if (st.turn !== mr){ playSound('error'); toast(`⏳ Wait for ${gName(s, otherSide(mr))}`); return; }
+  if (s.g === 'ttt' && st.cells[data.i]) return;
+  if (s.g === 'c4' && st.cells[data.c]) { playSound('error'); return; }
+  if (s.g === 'spin' && (st.cells[data.i] || !st.left[mr])) return;
+  if (s.g === 'chess' && !st.legal.some(x => x.from === data.from && x.to === data.to)) return;
+  if (s.g === 'mem' && (st.matched[data.i] || (st.open.length < 2 && st.open.includes(data.i)))) return;
+  const ev = Object.assign({k:'game', t:'move', sid:s.sid, by:mr, eid:rnd(10)}, data);
+  applyMove(ev, true);
+  try { await publish({topic: T.game(), message: JSON.stringify(ev)}); }
+  catch(e){
+    s.moves = s.moves.filter(x => x.eid !== ev.eid); s.eids = s.eids.filter(x => x !== ev.eid); saveGames();
+    renderGame(); toast('😬 No connection – try that again', 3000);
+  }
+}
+function applyMove(ev, local){
+  const s = games[ev.sid]; if (!s || s.eids.includes(ev.eid)) return;
+  const before = gstate(s);
+  s.eids.push(ev.eid); s.moves.push(ev); saveGames();
+  if (!mineSession(s)) return;
+  const viewing = ev.sid === curSid && !$('#gameOv').classList.contains('hidden');
+  if (!viewing){
+    if (!local && ev.by !== myRole()){
+      const st = gstate(s);
+      if (!st.winner && (st.turn === myRole() || s.g === 'rps')) toast(`🎮 ${gName(s, ev.by)} played – your turn!`, 3500);
+    }
+    return;
+  }
+  renderGame();
+  gameFeedback(s, before, gstate(s), ev);
+}
+function gameFeedback(s, b, a, ev){
+  const mr = myRole(), opp = otherSide(mr), talk = kidTalks();
+  if (a.winner && !b.winner){
+    if (a.winner === mr){ playSound('fanfare'); rain([], 80, {confetti:true}); if (talk) setTimeout(() => say('You win! Hooray!'), 600); }
+    else if (a.winner === 'draw'){ playSound('boing'); if (talk) say("It's a tie!"); }
+    else { playSound('hmm'); if (talk) setTimeout(() => say(`${gName(s, opp)} wins! Let's play again!`), 400); }
+    return;
+  }
+  if (s.g === 'rps'){
+    if (a.rounds.length > b.rounds.length){
+      const r = a.rounds[a.rounds.length - 1];
+      playSound(r.w === mr ? 'sparkle' : r.w === 'draw' ? 'boing' : 'bonk');
+      if (talk) say(r.w === mr ? 'You got it!' : r.w === 'draw' ? 'Same! Again!' : `${gName(s, opp)} got it!`);
+    } else playSound(ev.by === mr ? 'ding' : 'chime');
+    return;
+  }
+  if (s.g === 'pong'){
+    const pts = x => x.scores.kid + x.scores.parent;
+    if (pts(a) > pts(b)){
+      const mine = a.scores[mr] > b.scores[mr];
+      playSound(mine ? 'sparkle' : 'bonk');
+      if (talk) say(mine ? 'Point for you!' : `Point for ${gName(s, opp)}!`);
+    } else playSound(ev.by === mr ? 'tock' : 'tock2');
+    return;
+  }
+  if (s.g === 'snl' && a.lastRoll){
+    const r = a.lastRoll;
+    if (r.to < r.land){ playSound('bonk'); if (talk) say(r.by === mr ? 'Oh no, a snake!' : `${gName(s, opp)} hit a snake!`); }
+    else if (r.to > r.land){ playSound('sparkle'); if (talk) say(r.by === mr ? 'Up the ladder!' : `${gName(s, opp)} climbed a ladder!`); }
+    else playSound(ev.by === mr ? 'ding' : 'chime');
+    if (talk && a.turn === mr) setTimeout(() => say('Your turn! Roll the dice!'), 1400);
+    return;
+  }
+  if (s.g === 'spin'){ playSound('whoosh'); if (talk && a.turn === mr) setTimeout(() => say('Your turn!'), 900); return; }
+  if (s.g === 'chess' && a.check){ playSound('bonk'); if (talk) say(a.turn === mr ? 'Check! Save your king!' : 'Check!'); return; }
+  if (s.g === 'mem' && a.match === true){ playSound('sparkle'); if (talk && ev.by === mr) say('A match! Go again!'); return; }
+  playSound(ev.by === mr ? 'ding' : 'chime');
+  if (talk && a.turn === mr && b.turn !== mr) setTimeout(() => say('Your turn!'), 500);
+}
+function gameIncoming(ev, m){
+  if (!ev || ev.k !== 'game') return;
+  if (ev.t === 'start'){
+    if (!addSession(ev, m.time)) return;
+    const s = games[ev.sid];
+    if (!mineSession(s) || ev.by === myRole()) return;
+    if (Date.now()/1000 - m.time > 900) return;
+    showGameInvite(s);
+  } else if (ev.t === 'move') applyMove(ev, false);
+}
+function showGameInvite(s){
+  if (role === 'kid' && editingOnKid) return;
+  if (role === 'parent' && $('#parent').classList.contains('hidden')) return;
+  $('#gInvE').textContent = GAMES[s.g].e;
+  const who = role === 'kid' ? gFace(s, 'parent') + ' ' + gName(s, 'parent') : '🧒 ' + gName(s, 'kid');
+  $('#gInvText').textContent = `${who} wants to play ${GAMES[s.g].n}!`;
+  $('#gInvOv').dataset.sid = s.sid;
+  $('#gInvOv').classList.remove('hidden');
+  playSound('ring');
+  if (kidTalks()) setTimeout(() => say(`${gName(s, 'parent')} wants to play ${GAMES[s.g].say}!`), 900);
+}
+$('#gInvYes').onclick = () => { $('#gInvOv').classList.add('hidden'); curSid = $('#gInvOv').dataset.sid; openGame(); };
+$('#gInvNo').onclick = () => $('#gInvOv').classList.add('hidden');
+
+function openGame(){
+  const s = games[curSid]; if (!s) return;
+  $('#gPickOv').classList.add('hidden');
+  $('#gameOv').classList.remove('hidden');
+  renderGame();
+  const st = gstate(s);
+  if (kidTalks() && !st.winner && st.turn === 'kid' && s.moves.length) setTimeout(() => say('Your turn!'), 600);
+}
+function renderGame(){
+  const s = games[curSid]; if (!s) return;
+  const st = gstate(s), mr = myRole(), opp = otherSide(mr);
+  $('#gTitle').textContent = `${GAMES[s.g].e} ${GAMES[s.g].n}`;
+  const scores = s.g === 'mem' || s.g === 'rps' || s.g === 'pong';
+  if (curSid !== lastRenderSid){ lastRenderSid = curSid; chessSel = null; lastSpinMoves = s.moves.length; }
+  const pl = who => `<span class="pe">${gPiece(s, who)}</span>${esc(gName(s, who))}${scores ? `<span class="sc">${st.scores[who]}</span>` : ''}`;
+  $('#gpKid').innerHTML = pl('kid'); $('#gpPar').innerHTML = pl('parent');
+  const waiting = who => !st.winner && (s.g === 'rps' ? !st.cur[who] : s.g === 'pong' ? (!st.ball && st.server === who) : st.turn === who);
+  $('#gpKid').classList.toggle('turn', waiting('kid'));
+  $('#gpPar').classList.toggle('turn', waiting('parent'));
+  let txt;
+  if (st.winner) txt = st.winner === 'draw' ? "🤝 It's a tie!" : st.winner === mr ? '🏆 You win!' : `🏆 ${gName(s, opp)} wins!`;
+  else if (s.g === 'rps') txt = st.cur[mr] ? `⏳ Waiting for ${gName(s, opp)}…` : '👉 Pick one!';
+  else if (s.g === 'pong') txt = st.ball ? '🏓 Go go go!' : st.server === mr ? '👉 Your serve!' : `⏳ ${gName(s, opp)} serves…`;
+  else if (s.g === 'snl' && st.turn === mr) txt = '👉 Your turn – roll the dice!';
+  else if (s.g === 'chess' && st.check) txt = st.turn === mr ? '⚠️ Check! Your turn' : `⚠️ Check! ${gName(s, opp)}'s turn`;
+  else txt = st.turn === mr ? '👉 Your turn!' : `⏳ ${gName(s, opp)}'s turn…`;
+  $('#gStatus').textContent = txt;
+  let h = '';
+  if (s.g === 'ttt' || s.g === 'c4'){
+    h = `<div class="board ${s.g}">` + st.cells.map((c, i) =>
+      `<button class="cell ${st.line && st.line.includes(i) ? 'win' : ''}" data-i="${i}" aria-label="square">${c ? gPiece(s, c) : ''}</button>`).join('') + '</div>';
+  }
+  if (s.g === 'mem'){
+    h = '<div class="board mem">' + st.deck.map((f, i) => {
+      const up = st.matched[i] || st.open.includes(i);
+      return `<button class="card ${st.matched[i] ? 'done' : up ? 'up' : ''}" data-i="${i}" aria-label="card">${up ? f : '❓'}</button>`;
+    }).join('') + '</div>';
+  }
+  if (s.g === 'rps'){
+    const last = st.rounds[st.rounds.length - 1];
+    h = `<div class="rps-show">${last ? `${RPS[last.kid]} 🆚 ${RPS[last.parent]}` : '✊ ✋ ✌️'}</div>`;
+    h += `<div class="gsub">${last ? (last.w === 'draw' ? 'Same! 🤝' : last.w === mr ? 'You got that one! 🎉' : `${esc(gName(s, opp))} got that one!`) : 'First to 3 wins!'}</div>`;
+    if (!st.winner) h += '<div class="rps-picks">' + Object.entries(RPS).map(([k, e]) =>
+      `<button data-pick="${k}" class="${st.cur[mr] === k ? 'chosen' : ''}" ${st.cur[mr] ? 'disabled' : ''} aria-label="${k}">${e}</button>`).join('') + '</div>';
+  }
+  if (s.g === 'spin'){
+    const spun = s.moves.length !== lastSpinMoves; lastSpinMoves = s.moves.length;
+    h = `<div class="board spin ${spun ? 'spinning' : ''}">` + st.cells.map((c, i) =>
+      `<button class="cell ${RING_IN.includes(i) ? 'inner' : ''} ${st.line && st.line.includes(i) ? 'win' : ''}" data-i="${i}" aria-label="hole">${c ? gPiece(s, c) : ''}</button>`).join('') + '</div>';
+    h += `<div class="gsub">🌀 The board spins after every move! &nbsp; ${gPiece(s,'kid')}×${st.left.kid} &nbsp; ${gPiece(s,'parent')}×${st.left.parent}</div>`;
+  }
+  if (s.g === 'chess'){
+    const flip = st.col[mr] === 'b';
+    const order = [...Array(64).keys()]; if (flip) order.reverse();
+    const targets = chessSel != null ? st.legal.filter(m => m.from === chessSel).map(m => m.to) : [];
+    const kingIdx = st.check ? st.cs.b.indexOf(st.cs.turn === 'w' ? 'K' : 'k') : -1;
+    h = '<div class="board chess">' + order.map(i => {
+      const p = st.cs.b[i], dark = ((i >> 3) + (i & 7)) % 2 === 1;
+      const lm = st.lastMove && (i === st.lastMove.from || i === st.lastMove.to);
+      const cls = ['sq', dark ? 'dk' : 'lt', i === chessSel ? 'sel' : '', targets.includes(i) ? 'tg' : '', lm ? 'lm' : '', i === kingIdx ? 'chk' : ''].join(' ');
+      return `<button class="${cls}" data-sq="${i}" aria-label="square">${p !== '.' ? `<span class="${p === p.toUpperCase() ? 'pw' : 'pb'}">${GLYPH[p.toLowerCase()]}</span>` : ''}</button>`;
+    }).join('') + '</div>';
+    h += `<div class="gsub">You are ${st.col[mr] === 'w' ? '⚪ white' : '⚫ black'} · tap a piece, then a green dot</div>`;
+  }
+  if (s.g === 'snl'){
+    let cells = '';
+    for (let r = 0; r < 10; r++){
+      const row = 9 - r;
+      for (let k = 0; k < 10; k++){
+        const col = row % 2 === 0 ? k : 9 - k, n = row*10 + col + 1, sl = SNL[n];
+        const here = ['kid','parent'].filter(w => st.pos[w] === n).map(w => gPiece(s, w)).join('');
+        cells += `<div class="snc ${n % 2 ? 'a' : 'b'} ${sl ? (sl > n ? 'lad' : 'snk') : ''}"><span class="snn">${n}</span>` +
+          (sl ? `<span class="sni">${sl > n ? '🪜' : '🐍'}<small>${sl > n ? '↑' : '↓'}${sl}</small></span>` : '') +
+          (here ? `<span class="snp">${here}</span>` : '') + '</div>';
+      }
+    }
+    const atStart = ['kid','parent'].filter(w => st.pos[w] === 0).map(w => gPiece(s, w)).join(' ');
+    const lr = st.lastRoll;
+    const info = lr ? `${gPiece(s, lr.by)} rolled ${lr.roll}` + (lr.to < lr.land ? ` → 🐍 down to ${lr.to}` : lr.to > lr.land ? ` → 🪜 up to ${lr.to}!` : ` → ${lr.to}`) : 'Roll the dice to start!';
+    const canRoll = !st.winner && st.turn === mr;
+    h = `<div class="snlwrap"><div class="board snl">${cells}</div><div class="dicebox">` +
+        `<div class="die" id="die">${lr ? DIE[lr.roll - 1] : '🎲'}</div>` +
+        `<div class="gsub">${info}</div>` +
+        (st.winner ? '' : `<button class="btn big green" data-roll="1" ${canRoll ? '' : 'disabled'}>🎲 Roll!</button>`) +
+        (atStart ? `<div class="gsub">🏁 Start: ${atStart}</div>` : '') + '</div></div>';
+  }
+  if (s.g === 'pong'){
+    const canServe = !st.winner && !st.ball && st.server === mr;
+    h = `<div class="pongwrap"><canvas id="pongCv"></canvas>${canServe ? '<button class="btn big green" data-serve="1">🏓 Serve!</button>' : ''}</div>` +
+        `<div class="gsub">👆 Slide your finger to move your paddle · first to 5!</div>`;
+  }
+  $('#gBoard').innerHTML = h;
+  $('#gAgain').classList.toggle('hidden', !st.winner);
+  if (s.g === 'pong') pongStart();
+}
+$('#gBoard').addEventListener('click', e => {
+  unlockAudio();
+  const s = games[curSid]; if (!s) return;
+  const pk = e.target.closest('[data-pick]'); if (pk){ gameMove({pick: pk.dataset.pick}); return; }
+  if (e.target.closest('[data-serve]')){ pongServe(); return; }
+  const rl = e.target.closest('[data-roll]'); if (rl){ rollDice(rl); return; }
+  const sq = e.target.closest('[data-sq]'); if (sq){ chessTap(+sq.dataset.sq); return; }
+  const c = e.target.closest('[data-i]'); if (!c) return;
+  const i = +c.dataset.i;
+  if (s.g === 'c4') gameMove({c: i % 7}); else gameMove({i});
+});
+let chessSel = null, lastRenderSid = null, lastSpinMoves = 0;
+function chessTap(i){
+  const s = games[curSid], st = gstate(s), mr = myRole();
+  if (st.winner) return;
+  if (chessSel != null && st.legal.some(m => m.from === chessSel && m.to === i)){
+    const from = chessSel; chessSel = null; gameMove({from, to:i}); return;
+  }
+  const p = st.cs.b[i];
+  const mine = p !== '.' && ((p === p.toUpperCase()) === (st.col[mr] === 'w'));
+  if (mine && st.turn === mr){
+    chessSel = chessSel === i ? null : i;
+    if (chessSel != null && !st.legal.some(m => m.from === i)){ playSound('error'); chessSel = null; }
+  } else if (st.turn !== mr){ toast(`⏳ Wait for ${gName(s, otherSide(mr))}`); chessSel = null; }
+  else chessSel = null;
+  renderGame();
+}
+function rollDice(btn){
+  btn.disabled = true;
+  const roll = 1 + Math.floor(Math.random() * 6);
+  const die = $('#die'); let k = 0;
+  playSound('roll');
+  die.classList.add('rolling');
+  const t = setInterval(() => {
+    die.textContent = DIE[Math.floor(Math.random() * 6)];
+    if (++k >= 8){ clearInterval(t); die.textContent = DIE[roll - 1]; gameMove({roll}); }
+  }, 70);
+}
+
+/* Paddle Ball: each device is in charge of its own end. When the ball reaches you,
+   your device decides "hit" or "miss" and tells the other one. */
+const pong = {raf:0, myX:0.5, oppX:0.5, ballEid:null, t0:0, sentFor:null};
+const fold = x => { x = ((x % 2) + 2) % 2; return x > 1 ? 2 - x : x; };
+const viewX = x => myRole() === 'kid' ? x : 1 - x;   // field x → my screen x (the other side sees the field turned around)
+function pongStart(){ if (!pong.raf) pong.raf = requestAnimationFrame(pongTick); }
+function pongServe(){
+  const mr = myRole();
+  const vxView = (Math.random() < .5 ? -1 : 1) * (0.25 + Math.random() * 0.35);
+  gameMove({kind:'serve', x: viewX(pong.myX), vx: mr === 'kid' ? vxView : -vxView, d: 2.8});
+}
+function pongTick(now){
+  pong.raf = 0;
+  const s = games[curSid];
+  if (!s || s.g !== 'pong' || $('#gameOv').classList.contains('hidden')) return;
+  const cv = $('#pongCv'); if (!cv) return;
+  const st = gstate(s), mr = myRole(), opp = otherSide(mr);
+  let bx = null, by = 0;
+  if (st.ball){
+    if (pong.ballEid !== st.ball.eid){ pong.ballEid = st.ball.eid; pong.t0 = now; }
+    let f = (now - pong.t0) / 1000 / st.ball.d;
+    const fromMe = st.ball.by === mr;
+    if (f >= 1){
+      f = 1;
+      if (!fromMe && pong.sentFor !== st.ball.eid){
+        pong.sentFor = st.ball.eid;
+        const xf = fold(st.ball.x + st.ball.vx), xv = viewX(xf), hw = PW[mr];
+        if (Math.abs(xv - pong.myX) <= hw + 0.035){
+          const off = Math.max(-1, Math.min(1, (xv - pong.myX) / hw));
+          const vxView = off * 0.9 + (Math.random() - .5) * 0.1;
+          gameMove({kind:'hit', x: xf, vx: mr === 'kid' ? vxView : -vxView, d: Math.max(1.5, st.ball.d * 0.94)});
+        } else gameMove({kind:'miss'});
+      }
+    }
+    bx = viewX(fold(st.ball.x + st.ball.vx * f));
+    by = fromMe ? f : 1 - f;
+    const target = (!fromMe || f >= 1) ? 0.5 : bx;            // the other paddle (just for show) follows the ball
+    pong.oppX += Math.max(-0.02, Math.min(0.02, target - pong.oppX));
+  }
+  drawPong(cv, s, mr, opp, bx, by);
+  if (!st.winner) pong.raf = requestAnimationFrame(pongTick);
+}
+function drawPong(cv, s, mr, opp, bx, by){
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (!W || !H) return;
+  if (cv.width !== Math.round(W*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const grd = g.createLinearGradient(0, 0, 0, H); grd.addColorStop(0, '#312e81'); grd.addColorStop(1, '#1e1b4b');
+  g.fillStyle = grd; g.fillRect(0, 0, W, H);
+  g.setLineDash([12, 12]); g.strokeStyle = 'rgba(255,255,255,.25)'; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(0, H/2); g.lineTo(W, H/2); g.stroke(); g.setLineDash([]);
+  const pad = (x, hw, y, color) => {
+    const pw = hw*2*W, ph = 16; g.fillStyle = color; g.beginPath();
+    if (g.roundRect) g.roundRect(x*W - pw/2, y - ph/2, pw, ph, 8); else g.rect(x*W - pw/2, y - ph/2, pw, ph);
+    g.fill();
+  };
+  const top = 26, bottom = H - 26;
+  pad(pong.myX, PW[mr], bottom, '#facc15');
+  pad(pong.oppX, PW[opp], top, '#f472b6');
+  g.font = `${Math.round(W*0.07)}px system-ui`; g.textBaseline = 'middle';
+  g.fillText(gPiece(s, opp), 8, top + 34); g.fillText(gPiece(s, mr), 8, bottom - 34);
+  if (bx != null){
+    const R = Math.max(9, W*0.032), yy = bottom - by*(bottom - top);
+    g.fillStyle = '#fff'; g.shadowColor = 'rgba(255,255,255,.8)'; g.shadowBlur = 14;
+    g.beginPath(); g.arc(R + bx*(W - 2*R), yy, R, 0, Math.PI*2); g.fill(); g.shadowBlur = 0;
+  }
+}
+const pongPoint = e => {
+  if (e.target.id !== 'pongCv') return;
+  const r = e.target.getBoundingClientRect();
+  pong.myX = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+};
+$('#gBoard').addEventListener('pointerdown', pongPoint);
+$('#gBoard').addEventListener('pointermove', pongPoint);
+document.addEventListener('keydown', e => {
+  if ($('#gameOv').classList.contains('hidden')) return;
+  if (e.key === 'ArrowLeft')  pong.myX = Math.max(0, pong.myX - 0.06);
+  if (e.key === 'ArrowRight') pong.myX = Math.min(1, pong.myX + 0.06);
+});
+
+$('#gClose').onclick = () => { $('#gameOv').classList.add('hidden'); if (hasTTS) speechSynthesis.cancel(); if (role === 'parent') renderGamesTab(); };
+$('#gAgain').onclick = () => { const s = games[curSid]; if (s) startGame(s.g, s.p, otherSide(s.first || 'kid')); };
+$('#gOther').onclick = () => { $('#gameOv').classList.add('hidden'); if (role === 'kid') openGamePicker(); else { tab('games'); } };
+
+/* game picker */
+let gOpp = null;
+function gameTiles(){ return Object.entries(GAMES).map(([k, g]) => `<button class="gtile" data-g="${k}"><span class="ge">${g.e}</span>${g.n}</button>`).join(''); }
+function kidGameTile(){
+  const s = latestGame();
+  if (s && !gstate(s).winner && Date.now()/1000 - s.time < 6*3600){ curSid = s.sid; openGame(); return; }
+  openGamePicker();
+}
+function openGamePicker(){
+  gOpp = (sendTo !== 'all' && exactParent(sendTo)) ? sendTo : (gOpp && exactParent(gOpp) ? gOpp : cfg.parents[0].id);
+  renderOpp();
+  $('#gPickGrid').innerHTML = gameTiles();
+  $('#gPickOv').classList.remove('hidden');
+  if (kidTalks()) say("Let's play! Pick a game.");
+}
+function renderOpp(){
+  $('#gOpp').classList.toggle('hidden', cfg.parents.length < 2);
+  $('#gOpp').innerHTML = cfg.parents.map(p => `<button class="chip ${p.id === gOpp ? 'on' : ''}" data-opp="${esc(p.id)}" style="font-size:20px">${esc(p.e)} ${esc(p.name || '?')}</button>`).join('');
+}
+$('#gOpp').addEventListener('click', e => { const b = e.target.closest('[data-opp]'); if (!b) return; gOpp = b.dataset.opp; renderOpp(); if (kidTalks()) say(pName(gOpp)); });
+$('#gPickX').onclick = () => $('#gPickOv').classList.add('hidden');
+$('#gPickGrid').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) startGame(b.dataset.g, gOpp, 'kid'); });
+function renderGamesTab(){
+  $('#gTabTitle').textContent = `🎮 Play with ${cfg.kidName || 'your kid'}`;
+  $('#gTabGrid').innerHTML = gameTiles();
+  const s = latestGame();
+  const live = s && !gstate(s).winner && Date.now()/1000 - s.time < 6*3600;
+  $('#gContinue').classList.toggle('hidden', !live);
+  if (live) $('#gContinue').textContent = `▶️ Continue ${GAMES[s.g].n}`;
+}
+$('#gContinue').onclick = () => { const s = latestGame(); if (s){ curSid = s.sid; openGame(); } };
+$('#gTabGrid').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) startGame(b.dataset.g, me, 'kid'); });
+
+/* =========================================================
    ROUTING / FIRST RUN
    ========================================================= */
-function show(id){ ['welcome','psetup','kjoin','kid','parent'].forEach(s => $('#'+s).classList.toggle('hidden', s !== id)); window.scrollTo(0,0); }
+function show(id){ ['welcome','psetup','kjoin','kid','parent','plock'].forEach(s => $('#'+s).classList.toggle('hidden', s !== id)); window.scrollTo(0,0); }
 function syncUrl(){
-  // put the code in the address so "Add to Home Screen" remembers it
-  if (family && role){ const want = appUrl(role); if (location.href !== want) history.replaceState(null, '', want); }
+  if (family && role){ const want = appUrl(role, me); if (location.href !== want) history.replaceState(null, '', want); }
 }
+const langOptions = Object.entries(LANGS).map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+$('#psLang').innerHTML = langOptions; $('#psLang').value = guessLang();
+$('#vLang').innerHTML = langOptions;
+if (hasTTS){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
 
 $('#wParent').onclick = () => show('psetup');
 $('#wKid').onclick = () => show('kjoin');
@@ -1028,9 +2454,12 @@ $('#psetupForm').addEventListener('submit', e => {
   e.preventDefault();
   const pin = $('#psPin').value.trim();
   if (!/^\d{4}$/.test(pin)) return toast('PIN must be 4 digits');
-  family = newCode(); role = 'parent';
-  LS.set('family', family); LS.set('role', role);
-  cfg.kidName = $('#psKid').value.trim(); cfg.parentName = $('#psParent').value.trim(); cfg.pin = pin; cfg.updated = Date.now();
+  family = newCode(); role = 'parent'; me = 'p1';
+  LS.set('family', family); LS.set('role', role); LS.set('me', me);
+  cfg = normalize(null);
+  cfg.kidName = $('#psKid').value.trim(); cfg.pin = pin; cfg.voice.lang = $('#psLang').value;
+  cfg.parents = [{id:'p1', name:$('#psParent').value.trim(), e:'🧔'}]; cfg.parentName = cfg.parents[0].name;
+  cfg.updated = Date.now();
   saveCfg(); syncUrl();
   startParent(); tab('setup'); pushConfig();
   toast('🎉 Done! Now follow the steps below.', 3000);
@@ -1043,9 +2472,8 @@ $('#kjoinForm').addEventListener('submit', e => {
 });
 
 document.addEventListener('visibilitychange', () => {
-  // iOS drops the live connection in the background — reconnect when we come back
   if (document.visibilityState !== 'visible' || !family) return;
-  if (role === 'parent') connectParent(); else if (role === 'kid' && !editingOnKid) connectKid();
+  if (role === 'parent') connectParent(); else if (role === 'kid') connectKid();
 });
 
 (function boot(){
